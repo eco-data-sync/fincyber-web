@@ -7,134 +7,101 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     <style>
-        body { background-color: #050505; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
-        .neon-text { text-shadow: 0 0 10px rgba(0, 255, 204, 0.7); color: #00ffcc; }
-        .cyber-border { border: 1px solid #333; box-shadow: 0 0 15px rgba(0, 255, 204, 0.1); }
-        .terminal-bg { background: rgba(10, 10, 10, 0.9); }
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body { background-color: #030303; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
+        .neon-text { text-shadow: 0 0 15px rgba(0, 255, 204, 0.9); color: #00ffcc; }
+        
+        /* Hiệu ứng viền Cyberpunk siêu lung linh */
+        .cyber-border { 
+            position: relative;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.05);
+        }
+        .cyber-border::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #00ffcc, transparent, #ff00ff, transparent, #00ffcc);
+            z-index: -1; filter: blur(10px); opacity: 0.3; animation: breathe 4s linear infinite;
+        }
+
+        /* Nút bấm Thanh toán Quyền lực */
+        .btn-glow {
+            background: linear-gradient(90deg, #00ffcc, #0088ff, #00ffcc);
+            background-size: 200% auto;
+            color: #000;
+            text-shadow: 0px 0px 5px rgba(255,255,255,0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+            transition: 0.5s;
+        }
+        .btn-glow:hover {
+            background-position: right center;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 1);
+            transform: scale(1.02);
+        }
+
+        @keyframes breathe { 0% { opacity: 0.2; } 50% { opacity: 0.5; } 100% { opacity: 0.2; } }
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Hiệu ứng con trỏ nhấp nháy */
+        .cursor-blink::after { content: '█'; animation: blink 1s step-start infinite; color: #00ffcc; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
 
-    <div class="absolute inset-0 z-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 30px 30px;"></div>
+    <div class="absolute inset-0 z-0 opacity-20" style="background-image: radial-gradient(#00ffcc 1px, transparent 1px); background-size: 40px 40px;"></div>
 
-    <main class="z-10 w-full max-w-6xl px-6 py-12 flex flex-col md:flex-row items-center gap-12 fade-in" id="main-content" style="display: none;">
+    <main class="z-10 w-full max-w-6xl px-6 py-12 flex flex-col md:flex-row items-center gap-12 fade-in">
         
-        <!-- Cột Trái: Nội dung tự động dịch -->
+        <!-- Cột Trái -->
         <div class="w-full md:w-1/2 flex flex-col gap-6">
-            <div id="status-badge" class="inline-block px-3 py-1 border border-gray-700 rounded-full text-xs text-gray-400 w-max tracking-widest uppercase">
-                Status: System Active
+            <div class="inline-block px-3 py-1 border border-[#00ffcc] rounded-full text-xs text-[#00ffcc] font-bold w-max tracking-widest uppercase shadow-[0_0_10px_rgba(0,255,204,0.3)]">
+                <span class="animate-pulse mr-2">●</span> System Active
             </div>
-            <h1 class="text-5xl md:text-6xl font-bold tracking-tighter leading-tight">
-                <span id="title-1">Hệ Thống Tình Báo</span> <br> <span class="neon-text">NQT_v31 Radar</span>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter leading-tight">
+                Global Intelligence <br> <span class="neon-text">NQT_v31 Radar</span>
             </h1>
-            <p id="desc-text" class="text-gray-400 text-lg leading-relaxed font-sans">
-                Truy cập đặc quyền vào cơ sở dữ liệu lỗ hổng bảo mật của hàng vạn định chế tài chính toàn cầu. Dữ liệu được cập nhật Real-time từ mạng lưới BGP và OSINT. Khai thác hoặc Phòng vệ — Lựa chọn là của quý vị.
+            <p class="text-gray-400 text-lg leading-relaxed font-sans">
+                Exclusive access to the vulnerability database of tens of thousands of global financial institutions. Exploit or Defend — The choice is yours.
             </p>
             
             <div class="mt-8 flex flex-col gap-4">
-                <div class="p-6 cyber-border terminal-bg rounded-lg">
-                    <h3 id="api-title" class="text-2xl font-bold text-white mb-2">Enterprise API Access</h3>
-                    <p id="api-desc" class="text-gray-400 font-sans mb-4">Kết nối hệ thống của quý vị để nhận cảnh báo CVE và IP phơi nhiễm ngay thời gian thực.</p>
-                    <p class="text-3xl font-bold neon-text mb-6">5,000 USDC <span id="price-sub" class="text-sm text-gray-500 font-normal">/ 30 ngày</span></p>
-                    <button id="purchase-btn" onclick="connectWalletAndPurchase()" class="w-full bg-[#00ffcc] text-black font-bold py-3 px-4 rounded hover:bg-white transition duration-300 uppercase tracking-widest">
+                <div class="p-6 cyber-border rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-2">Enterprise API Access</h3>
+                    <p class="text-gray-400 font-sans mb-4">Connect your system to receive real-time CVE alerts and exposed IP tracking.</p>
+                    <p class="text-4xl font-bold neon-text mb-6">5,000 USDC <span class="text-sm text-gray-500 font-normal">/ 30 days</span></p>
+                    
+                    <!-- Nút bấm lung linh -->
+                    <button id="purchase-btn" onclick="connectWalletAndPurchase()" class="btn-glow w-full font-extrabold py-4 px-4 rounded-lg uppercase tracking-widest text-lg">
                         Connect Wallet & Purchase
                     </button>
-                    <p id="payment-note" class="text-xs text-gray-500 mt-3 text-center">Chỉ chấp nhận thanh toán qua mạng lưới Solana (USDC/USDT).</p>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Secured via Solana Blockchain.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Cột Phải: Terminal (Giữ nguyên tiếng Anh vì ngôn ngữ code là chuẩn toàn cầu) -->
-        <div class="w-full md:w-1/2 p-6 cyber-border terminal-bg rounded-lg font-mono text-sm shadow-2xl">
-            <div class="flex gap-2 mb-4">
-                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+        <!-- Cột Phải: Terminal -->
+        <div class="w-full md:w-1/2 p-6 cyber-border rounded-xl font-mono text-sm shadow-2xl h-[400px] flex flex-col">
+            <div class="flex gap-2 mb-4 border-b border-gray-800 pb-2">
+                <div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_5px_red]"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500 shadow-[0_0_5px_yellow]"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_5px_green]"></div>
+                <span class="ml-4 text-gray-500 text-xs">root@nqt-radar:~#</span>
             </div>
-            <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90">
-                <p class="text-green-400">> Initiating NQT_v31_Financial_Threat_Intel...</p>
-                <p>> Establishing connection to MongoDB Swarm...</p>
-                <p>> Cross-referencing NVD database...</p>
-                <p class="text-red-400 mt-2">! ALERT: CRITICAL VULNERABILITY DETECTED !</p>
-                <p>> TARGET: JP MORGAN CHASE (US)</p>
-                <p>> EXPOSED IP: 159.53.xxx.xxx</p>
-                <p>> CVE-ID: CVE-2026-3099 (Apache Struts Exfiltration)</p>
-                <p>> SEVERITY SCORE: 10.0</p>
-                <p class="mt-2 text-yellow-400">>> Awaiting API Key validation to reveal full payload...</p>
-            </div>
-            <div class="mt-4 border-t border-gray-700 pt-2 flex justify-between text-xs text-gray-500">
-                <span>Node: active</span>
-                <span class="animate-pulse neon-text">● Live Feed</span>
+            <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 overflow-y-auto flex-grow">
+                <p class="text-green-400">> Initiating Data Stream...</p>
+                <p class="mt-2 text-yellow-400 cursor-blink" id="waiting-text">>> Awaiting API Key validation...</p>
             </div>
         </div>
     </main>
 
-    <footer class="absolute bottom-4 text-xs text-gray-600 font-sans z-10">
-        &copy; 2026 NQT Global Intelligence. All operations encrypted.
-    </footer>
-
-    <!-- Lõi Xử lý Logic (Đổi Ngôn Ngữ & Thanh Toán) -->
     <script>
-        // --- 1. TỪ ĐIỂN NGÔN NGỮ ---
-        const translations = {
-            "VN": {
-                title1: "Hệ Thống Tình Báo",
-                desc: "Truy cập đặc quyền vào cơ sở dữ liệu lỗ hổng bảo mật của hàng vạn định chế tài chính toàn cầu. Dữ liệu được cập nhật Real-time từ mạng lưới BGP và OSINT. Khai thác hoặc Phòng vệ — Lựa chọn là của quý vị.",
-                apiDesc: "Kết nối hệ thống của quý vị để nhận cảnh báo CVE và IP phơi nhiễm ngay thời gian thực.",
-                priceSub: "/ 30 ngày",
-                btn: "KẾT NỐI VÍ & THANH TOÁN",
-                note: "Chỉ chấp nhận thanh toán qua mạng lưới Solana (USDC/USDT)."
-            },
-            "GLOBAL": {
-                title1: "Global Intelligence",
-                desc: "Exclusive access to the vulnerability database of tens of thousands of global financial institutions. Data updated in real-time from BGP networks and OSINT. Exploit or Defend — The choice is yours.",
-                apiDesc: "Connect your system to receive real-time CVE alerts and exposed IP tracking.",
-                priceSub: "/ 30 days",
-                btn: "CONNECT WALLET & PURCHASE",
-                note: "Transactions exclusively accepted via Solana network (USDC/USDT)."
-            }
-        };
-
-        // --- 2. HỆ THỐNG QUÉT IP VÀ ÁP DỤNG NGÔN NGỮ ---
-        async function applyGeoLocalization() {
-            try {
-                // Gọi API miễn phí để lấy mã Quốc gia của người truy cập
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-                
-                // Nếu là IP Việt Nam -> Dùng tiếng Việt. Còn lại -> Dùng Tiếng Anh Toàn Cầu
-                const lang = (data.country_code === 'VN') ? 'VN' : 'GLOBAL';
-                
-                document.getElementById('title-1').innerText = translations[lang].title1;
-                document.getElementById('desc-text').innerText = translations[lang].desc;
-                document.getElementById('api-desc').innerText = translations[lang].apiDesc;
-                document.getElementById('price-sub').innerText = translations[lang].priceSub;
-                document.getElementById('purchase-btn').innerText = translations[lang].btn;
-                document.getElementById('payment-note').innerText = translations[lang].note;
-
-            } catch (error) {
-                // Nếu bị lỗi mạng hoặc trình duyệt chặn theo dõi IP, mặc định hiển thị Tiếng Anh
-                console.log("GeoIP blocked, defaulting to GLOBAL English.");
-                document.getElementById('title-1').innerText = translations['GLOBAL'].title1;
-                document.getElementById('desc-text').innerText = translations['GLOBAL'].desc;
-                document.getElementById('api-desc').innerText = translations['GLOBAL'].apiDesc;
-                document.getElementById('purchase-btn').innerText = translations['GLOBAL'].btn;
-            } finally {
-                // Sau khi đổi ngôn ngữ xong mới hiển thị web lên để tránh giật hình
-                document.getElementById('main-content').style.display = 'flex';
-            }
-        }
-
-        // Chạy hàm quét IP ngay khi tải trang
-        applyGeoLocalization();
-
-        // --- 3. HỆ THỐNG THANH TOÁN SOLANA (Giữ nguyên) ---
-        const TREASURY_WALLET = "ĐIỀN_ĐỊA_CHỈ_VÍ_SOLANA_CỦA_NGÀI_VÀO_ĐÂY"; 
+        const TREASURY_WALLET = "AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3"; 
         
         async function connectWalletAndPurchase() {
             const button = document.getElementById('purchase-btn');
+            const waitingText = document.getElementById('waiting-text');
+            
             try {
                 const provider = window.solana;
                 if (!provider || !provider.isPhantom) {
@@ -142,47 +109,55 @@
                     return;
                 }
 
-                button.innerText = "PROCESSING...";
-                button.classList.add("animate-pulse");
-                addLog("> Establishing Handshake with Phantom Wallet...");
+                button.innerText = "PROCESSING TRANSACTION...";
+                button.classList.add("opacity-80");
+                waitingText.classList.remove("cursor-blink");
+                addLog("> Handshake established. Awaiting 5,000 USDC transfer...");
 
                 const response = await provider.connect();
-                addLog(`> Verified Wallet ID: ${shortenAddress(response.publicKey.toString())}`);
-
-                addLog("> Requesting 5,000 USDC Smart Contract Payload...");
-                await new Promise(resolve => setTimeout(resolve, 3000)); // Giả lập chờ ký
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Giả lập chờ ký trên ví
 
                 addLog("> Transaction CONFIRMED on-chain.");
-                addLog("> Extracting NQT_v31 API Key...");
                 
                 button.innerText = "ACCESS GRANTED";
-                button.classList.remove("bg-[#00ffcc]", "text-black", "animate-pulse");
-                button.classList.add("bg-green-600", "text-white");
+                button.style.background = "#00ff00";
+                button.style.color = "#000";
+                button.style.boxShadow = "0 0 40px #00ff00";
 
-                setTimeout(() => {
-                    const apiKey = "NQT-" + Math.random().toString(36).substring(2, 15).toUpperCase();
-                    addLog(`[SECURITY] YOUR API KEY: ${apiKey}`);
-                    alert(`Transaction Complete! Your exclusive API Key: ${apiKey}`);
-                }, 1000);
+                const apiKey = "NQT-" + Math.random().toString(36).substring(2, 15).toUpperCase();
+                addLog(`[SECURITY] YOUR API KEY: ${apiKey}`, "text-[#00ffcc] font-bold text-lg mt-4");
+                
+                // MÔ PHỎNG LẤY DỮ LIỆU TỪ MONGODB THÔNG QUA API SERVER
+                addLog(`> Fetching Live MongoDB Data via API...`);
+                setTimeout(() => simulateMongoDataFetch(apiKey), 1500);
 
             } catch (err) {
                 console.error(err);
-                addLog("! TRANSACTION FAILED OR REJECTED.");
+                addLog("! TRANSACTION FAILED OR REJECTED.", "text-red-500 font-bold");
                 button.innerText = "CONNECT WALLET & PURCHASE";
-                button.classList.remove("animate-pulse");
+                button.classList.remove("opacity-80");
             }
         }
 
-        function addLog(message) {
+        function addLog(message, customClass = "text-green-400") {
             const terminal = document.getElementById('terminal-content');
             const p = document.createElement('p');
-            p.className = message.includes("!") ? "text-red-400 mt-2" : "text-green-400 mt-1";
+            p.className = `${customClass} mt-1 fade-in`;
             p.innerText = message;
             terminal.appendChild(p);
+            terminal.scrollTop = terminal.scrollHeight;
         }
 
-        function shortenAddress(address) {
-            return address.slice(0, 4) + "..." + address.slice(-4);
+        // Mô phỏng việc HTML gọi vào API Backend để lấy dữ liệu MongoDB
+        function simulateMongoDataFetch(apiKey) {
+            addLog("=========================================", "text-gray-500");
+            addLog("! ALERT: CRITICAL VULNERABILITY DETECTED !", "text-red-500 font-bold animate-pulse");
+            addLog("> TARGET: META PLATFORMS (US)");
+            addLog("> EXPOSED IP: 157.240.xx.xx");
+            addLog("> CVE-ID: CVE-2026-1044 (Remote Code Execution)");
+            addLog("> SEVERITY SCORE: 9.8 / 10.0");
+            addLog("=========================================", "text-gray-500");
+            addLog(">> Data stream active. Connect your backend to this API endpoint.", "text-yellow-400 mt-4 cursor-blink");
         }
     </script>
 </body>

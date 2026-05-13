@@ -10,7 +10,6 @@
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     
     <style>
-        /* Đã xóa overflow-hidden ở body để sửa lỗi mất nút */
         body { background-color: #030303; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; overflow-x: hidden; }
         .neon-text { text-shadow: 0 0 15px rgba(0, 255, 204, 0.9); color: #00ffcc; }
         
@@ -44,7 +43,6 @@
     <!-- Lưới nền không gian mạng -->
     <div class="fixed inset-0 z-0 opacity-20" style="background-image: radial-gradient(#00ffcc 1px, transparent 1px); background-size: 40px 40px; pointer-events: none;"></div>
 
-    <!-- Thu nhỏ max-w-6xl thành max-w-5xl, giảm padding và gap để tương đương tỷ lệ 75% -->
     <main class="z-10 w-full max-w-5xl px-4 py-8 md:py-12 flex flex-col md:flex-row items-center gap-6 md:gap-8 fade-in" id="main-content" style="display: none;">
         
         <!-- CỘT TRÁI: THÔNG ĐIỆP & NÚT THANH TOÁN -->
@@ -52,7 +50,6 @@
             <div class="inline-block px-3 py-1 border border-[#00ffcc] rounded-full text-[10px] md:text-xs text-[#00ffcc] font-bold w-max tracking-widest uppercase shadow-[0_0_10px_rgba(0,255,204,0.3)]">
                 <span class="animate-pulse mr-2">●</span> System Active
             </div>
-            <!-- Đã bỏ NQT_v31, giảm size text -->
             <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
                 <span id="title-1">Global Intelligence</span> <br> <span class="neon-text">Radar</span>
             </h1>
@@ -66,7 +63,7 @@
                     <p id="api-desc" class="text-gray-400 font-sans text-sm mb-4">Connect your system to receive real-time CVE alerts.</p>
                     <p class="text-3xl md:text-4xl font-bold neon-text mb-5 md:mb-6">5,000 USDC <span id="price-sub" class="text-xs md:text-sm text-gray-500 font-normal">/ 30 days</span></p>
                     
-                    <!-- NÚT GỌI SMART CONTRACT ĐƯỢC BẢO VỆ KHÔNG BỊ CẮT -->
+                    <!-- NÚT GỌI SMART CONTRACT -->
                     <button id="purchase-btn" onclick="executeSolanaTransaction()" class="btn-glow w-full font-extrabold py-3 md:py-4 px-4 rounded-lg uppercase tracking-widest text-sm md:text-base">
                         Connect Wallet & Purchase
                     </button>
@@ -75,7 +72,7 @@
             </div>
         </div>
 
-        <!-- CỘT PHẢI: TERMINAL TÌNH BÁO (Co giãn tốt trên điện thoại) -->
+        <!-- CỘT PHẢI: TERMINAL TÌNH BÁO -->
         <div class="w-full md:w-1/2 p-4 md:p-6 cyber-border rounded-xl font-mono text-xs md:text-sm shadow-2xl h-[300px] md:h-[400px] flex flex-col mt-4 md:mt-0">
             <div class="flex gap-2 mb-3 md:mb-4 border-b border-gray-800 pb-2">
                 <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500 shadow-[0_0_5px_red]"></div>
@@ -96,6 +93,10 @@
 
     <script>
         // --- 1. LÕI ĐỊNH VỊ ĐỊA LÝ & DỊCH THUẬT NGÔN NGỮ ---
+        
+        // Biến nhớ ngôn ngữ hiện tại của khách (Mặc định là tiếng Anh)
+        let currentLang = 'GLOBAL';
+
         const translations = {
             "VN": {
                 title1: "Hệ Thống Tình Báo",
@@ -104,7 +105,9 @@
                 apiDesc: "Kết nối hệ thống của quý vị để nhận cảnh báo CVE và IP phơi nhiễm ngay thời gian thực.",
                 priceSub: "/ 30 ngày",
                 btn: "KẾT NỐI VÍ & THANH TOÁN",
-                note: "Giao dịch trực tiếp trên mạng lưới Solana."
+                note: "Giao dịch trực tiếp trên mạng lưới Solana.",
+                // Thêm bản dịch cho thông báo lỗi Popup
+                phantomAlert: "Yêu cầu cài đặt Phantom Wallet (Mạng lưới Solana) để thực hiện giao dịch."
             },
             "GLOBAL": {
                 title1: "Global Intelligence",
@@ -113,7 +116,9 @@
                 apiDesc: "Connect your system to receive real-time CVE alerts and exposed IP tracking.",
                 priceSub: "/ 30 days",
                 btn: "CONNECT WALLET & PURCHASE",
-                note: "Live Transaction via Solana Mainnet-Beta."
+                note: "Live Transaction via Solana Mainnet-Beta.",
+                // Thêm bản dịch cho thông báo lỗi Popup (Tiếng Anh)
+                phantomAlert: "System requires Phantom Wallet (Solana Network) to execute secure transactions."
             }
         };
 
@@ -121,21 +126,26 @@
             try {
                 const response = await fetch('https://ipapi.co/json/');
                 const data = await response.json();
-                const lang = (data.country_code === 'VN') ? 'VN' : 'GLOBAL';
                 
-                document.getElementById('title-1').innerText = translations[lang].title1;
-                document.getElementById('desc-text').innerText = translations[lang].desc;
-                document.getElementById('api-title').innerText = translations[lang].apiTitle;
-                document.getElementById('api-desc').innerText = translations[lang].apiDesc;
-                document.getElementById('price-sub').innerText = translations[lang].priceSub;
-                document.getElementById('purchase-btn').innerText = translations[lang].btn;
-                document.getElementById('payment-note').innerText = translations[lang].note;
+                // Cập nhật biến nhớ toàn cục
+                currentLang = (data.country_code === 'VN') ? 'VN' : 'GLOBAL';
+                
+                document.getElementById('title-1').innerText = translations[currentLang].title1;
+                document.getElementById('desc-text').innerText = translations[currentLang].desc;
+                document.getElementById('api-title').innerText = translations[currentLang].apiTitle;
+                document.getElementById('api-desc').innerText = translations[currentLang].apiDesc;
+                document.getElementById('price-sub').innerText = translations[currentLang].priceSub;
+                document.getElementById('purchase-btn').innerText = translations[currentLang].btn;
+                document.getElementById('payment-note').innerText = translations[currentLang].note;
             } catch (e) {
-                console.log("Defaulting to GLOBAL");
+                console.log("GeoIP check failed. Defaulting to GLOBAL.");
+                currentLang = 'GLOBAL';
             } finally {
                 document.getElementById('main-content').style.display = 'flex';
             }
         }
+        
+        // Khởi chạy ngay khi vào web
         applyLocalization();
 
         // --- 2. LÕI GIAO DỊCH SOLANA THỰC TẾ TRÊN MAINNET ---
@@ -148,8 +158,10 @@
             
             try {
                 const provider = window.solana;
+                
+                // KIỂM TRA VÍ: Thông báo Popup sẽ tự động đổi ngôn ngữ theo IP
                 if (!provider || !provider.isPhantom) {
-                    alert("Yêu cầu cài đặt Phantom Wallet (Mạng lưới Solana) để thực hiện giao dịch.");
+                    alert(translations[currentLang].phantomAlert);
                     window.open("https://phantom.app/", "_blank");
                     return;
                 }

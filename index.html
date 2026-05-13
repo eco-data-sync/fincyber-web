@@ -10,7 +10,8 @@
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     
     <style>
-        body { background-color: #030303; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
+        /* Đã xóa overflow-hidden ở body để sửa lỗi mất nút */
+        body { background-color: #030303; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; overflow-x: hidden; }
         .neon-text { text-shadow: 0 0 15px rgba(0, 255, 204, 0.9); color: #00ffcc; }
         
         .cyber-border { 
@@ -38,57 +39,59 @@
         @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+<body class="antialiased min-h-screen flex flex-col items-center justify-center relative">
 
     <!-- Lưới nền không gian mạng -->
-    <div class="absolute inset-0 z-0 opacity-20" style="background-image: radial-gradient(#00ffcc 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="fixed inset-0 z-0 opacity-20" style="background-image: radial-gradient(#00ffcc 1px, transparent 1px); background-size: 40px 40px; pointer-events: none;"></div>
 
-    <main class="z-10 w-full max-w-6xl px-6 py-12 flex flex-col md:flex-row items-center gap-12 fade-in" id="main-content" style="display: none;">
+    <!-- Thu nhỏ max-w-6xl thành max-w-5xl, giảm padding và gap để tương đương tỷ lệ 75% -->
+    <main class="z-10 w-full max-w-5xl px-4 py-8 md:py-12 flex flex-col md:flex-row items-center gap-6 md:gap-8 fade-in" id="main-content" style="display: none;">
         
         <!-- CỘT TRÁI: THÔNG ĐIỆP & NÚT THANH TOÁN -->
-        <div class="w-full md:w-1/2 flex flex-col gap-6">
-            <div class="inline-block px-3 py-1 border border-[#00ffcc] rounded-full text-xs text-[#00ffcc] font-bold w-max tracking-widest uppercase shadow-[0_0_10px_rgba(0,255,204,0.3)]">
+        <div class="w-full md:w-1/2 flex flex-col gap-4 md:gap-5">
+            <div class="inline-block px-3 py-1 border border-[#00ffcc] rounded-full text-[10px] md:text-xs text-[#00ffcc] font-bold w-max tracking-widest uppercase shadow-[0_0_10px_rgba(0,255,204,0.3)]">
                 <span class="animate-pulse mr-2">●</span> System Active
             </div>
-            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter leading-tight">
-                <span id="title-1">Global Intelligence</span> <br> <span class="neon-text">NQT_v31 Radar</span>
+            <!-- Đã bỏ NQT_v31, giảm size text -->
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
+                <span id="title-1">Global Intelligence</span> <br> <span class="neon-text">Radar</span>
             </h1>
-            <p id="desc-text" class="text-gray-400 text-lg leading-relaxed font-sans">
+            <p id="desc-text" class="text-gray-400 text-sm md:text-base leading-relaxed font-sans">
                 Exclusive access to the vulnerability database of tens of thousands of global financial institutions.
             </p>
             
-            <div class="mt-8 flex flex-col gap-4">
-                <div class="p-6 cyber-border rounded-xl">
-                    <h3 id="api-title" class="text-2xl font-bold text-white mb-2">Enterprise API Access</h3>
-                    <p id="api-desc" class="text-gray-400 font-sans mb-4">Connect your system to receive real-time CVE alerts.</p>
-                    <p class="text-4xl font-bold neon-text mb-6">5,000 USDC <span id="price-sub" class="text-sm text-gray-500 font-normal">/ 30 days</span></p>
+            <div class="mt-4 md:mt-6 flex flex-col gap-4">
+                <div class="p-5 md:p-6 cyber-border rounded-xl">
+                    <h3 id="api-title" class="text-xl md:text-2xl font-bold text-white mb-2">Enterprise API Access</h3>
+                    <p id="api-desc" class="text-gray-400 font-sans text-sm mb-4">Connect your system to receive real-time CVE alerts.</p>
+                    <p class="text-3xl md:text-4xl font-bold neon-text mb-5 md:mb-6">5,000 USDC <span id="price-sub" class="text-xs md:text-sm text-gray-500 font-normal">/ 30 days</span></p>
                     
-                    <!-- NÚT GỌI SMART CONTRACT -->
-                    <button id="purchase-btn" onclick="executeSolanaTransaction()" class="btn-glow w-full font-extrabold py-4 px-4 rounded-lg uppercase tracking-widest text-lg">
+                    <!-- NÚT GỌI SMART CONTRACT ĐƯỢC BẢO VỆ KHÔNG BỊ CẮT -->
+                    <button id="purchase-btn" onclick="executeSolanaTransaction()" class="btn-glow w-full font-extrabold py-3 md:py-4 px-4 rounded-lg uppercase tracking-widest text-sm md:text-base">
                         Connect Wallet & Purchase
                     </button>
-                    <p id="payment-note" class="text-xs text-gray-500 mt-3 text-center">Live Transaction via Solana Mainnet-Beta.</p>
+                    <p id="payment-note" class="text-[10px] md:text-xs text-gray-500 mt-3 text-center">Live Transaction via Solana Mainnet-Beta.</p>
                 </div>
             </div>
         </div>
 
-        <!-- CỘT PHẢI: TERMINAL TÌNH BÁO -->
-        <div class="w-full md:w-1/2 p-6 cyber-border rounded-xl font-mono text-sm shadow-2xl h-[450px] flex flex-col">
-            <div class="flex gap-2 mb-4 border-b border-gray-800 pb-2">
-                <div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_5px_red]"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500 shadow-[0_0_5px_yellow]"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_5px_green]"></div>
-                <span class="ml-4 text-gray-500 text-xs">root@nqt-radar:~#</span>
+        <!-- CỘT PHẢI: TERMINAL TÌNH BÁO (Co giãn tốt trên điện thoại) -->
+        <div class="w-full md:w-1/2 p-4 md:p-6 cyber-border rounded-xl font-mono text-xs md:text-sm shadow-2xl h-[300px] md:h-[400px] flex flex-col mt-4 md:mt-0">
+            <div class="flex gap-2 mb-3 md:mb-4 border-b border-gray-800 pb-2">
+                <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500 shadow-[0_0_5px_red]"></div>
+                <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500 shadow-[0_0_5px_yellow]"></div>
+                <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500 shadow-[0_0_5px_green]"></div>
+                <span class="ml-3 md:ml-4 text-gray-500 text-[10px] md:text-xs">root@radar:~#</span>
             </div>
-            <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 overflow-y-auto flex-grow pr-2">
+            <div id="terminal-content" class="text-gray-300 flex flex-col gap-1.5 md:gap-2 opacity-90 overflow-y-auto flex-grow pr-2">
                 <p class="text-green-400">> Initiating Data Stream...</p>
                 <p class="mt-2 text-yellow-400 cursor-blink" id="waiting-text">>> Awaiting Solana On-Chain validation...</p>
             </div>
         </div>
     </main>
 
-    <footer class="absolute bottom-4 text-xs text-gray-600 font-sans z-10">
-        &copy; 2026 NQT Global Intelligence. All operations encrypted.
+    <footer class="relative md:absolute bottom-4 text-[10px] md:text-xs text-gray-600 font-sans z-10 mt-8 md:mt-0 text-center w-full">
+        &copy; 2026 Global Intelligence. All operations encrypted.
     </footer>
 
     <script>
@@ -137,14 +140,13 @@
 
         // --- 2. LÕI GIAO DỊCH SOLANA THỰC TẾ TRÊN MAINNET ---
         const TREASURY_WALLET = "AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3"; 
-        const NQT_API_URL = "https://nqt-cyber-api.onrender.com/api/v1/threat-intel";
+        const API_URL = "https://nqt-cyber-api.onrender.com/api/v1/threat-intel";
 
         async function executeSolanaTransaction() {
             const button = document.getElementById('purchase-btn');
             const waitingText = document.getElementById('waiting-text');
             
             try {
-                // 2.1: Kiểm tra ví Phantom
                 const provider = window.solana;
                 if (!provider || !provider.isPhantom) {
                     alert("Yêu cầu cài đặt Phantom Wallet (Mạng lưới Solana) để thực hiện giao dịch.");
@@ -152,41 +154,34 @@
                     return;
                 }
 
-                // Cập nhật giao diện khi đang xử lý
                 button.innerText = "WAITING FOR SIGNATURE...";
                 button.classList.add("opacity-80");
                 if (waitingText) waitingText.classList.remove("cursor-blink");
                 addLog("> Connecting to Phantom Wallet...", "text-gray-400");
 
-                // 2.2: Yêu cầu quyền truy cập ví của khách
                 const resp = await provider.connect();
                 const senderPubkey = resp.publicKey;
                 addLog(`> Wallet Authenticated: ${senderPubkey.toString().slice(0,6)}...${senderPubkey.toString().slice(-4)}`);
 
-                // 2.3: Xây dựng Giao dịch thực tế (Chuyển tiền vào ví Ngài)
                 addLog("> Constructing On-Chain Transaction...");
                 const connection = new window.solanaWeb3.Connection(window.solanaWeb3.clusterApiUrl('mainnet-beta'));
                 const transaction = new window.solanaWeb3.Transaction();
                 const receiverPubkey = new window.solanaWeb3.PublicKey(TREASURY_WALLET);
 
-                // Tạo lệnh chuyển đổi (Đang cấu hình 0.01 SOL làm mẫu test)
                 const transferInstruction = window.solanaWeb3.SystemProgram.transfer({
                     fromPubkey: senderPubkey,
                     toPubkey: receiverPubkey,
-                    lamports: window.solanaWeb3.LAMPORTS_PER_SOL * 0.01, // Đổi số này để tăng/giảm số tiền
+                    lamports: window.solanaWeb3.LAMPORTS_PER_SOL * 0.01, 
                 });
                 transaction.add(transferInstruction);
                 transaction.feePayer = senderPubkey;
 
-                // Lấy blockhash mới nhất của mạng lưới
                 let blockhashObj = await connection.getLatestBlockhash();
                 transaction.recentBlockhash = blockhashObj.blockhash;
 
-                // 2.4: Bật Popup Phantom yêu cầu khách hàng ký xác nhận
                 addLog("> Popup Triggered. Awaiting User Approval...", "text-yellow-400");
                 const signedTransaction = await provider.signTransaction(transaction);
 
-                // 2.5: Gửi giao dịch lên Blockchain và chờ mạng lưới xác nhận
                 addLog("> Broadcasting to Solana Mainnet...");
                 const signature = await connection.sendRawTransaction(signedTransaction.serialize());
                 
@@ -196,10 +191,6 @@
                     lastValidBlockHeight: blockhashObj.lastValidBlockHeight,
                     signature: signature
                 });
-
-                // ============================================
-                // TIỀN ĐÃ VÀO VÍ CỦA NGÀI. BẮT ĐẦU NHẢ DỮ LIỆU.
-                // ============================================
                 
                 addLog("> PAYMENT SECURED. ON-CHAIN VERIFICATION PASSED.", "text-green-500 font-bold");
                 
@@ -208,11 +199,9 @@
                 button.style.color = "#000";
                 button.style.boxShadow = "0 0 40px #00ff00";
 
-                // Sinh mã API Key 
-                const apiKey = "NQT-" + Math.random().toString(36).substring(2, 15).toUpperCase();
-                addLog(`[SECURITY] YOUR API KEY: ${apiKey}`, "text-[#00ffcc] font-bold text-lg mt-4");
+                const apiKey = "RADAR-" + Math.random().toString(36).substring(2, 15).toUpperCase();
+                addLog(`[SECURITY] YOUR API KEY: ${apiKey}`, "text-[#00ffcc] font-bold text-lg md:text-xl mt-4");
                 
-                // Gọi API kéo dữ liệu từ MongoDB Render hiển thị ngay lập tức
                 fetchRealDataFromRender(apiKey);
 
             } catch (err) {
@@ -229,10 +218,10 @@
 
         // --- 3. LÕI GỌI API RENDER (MONGODB) ---
         async function fetchRealDataFromRender(apiKey) {
-            addLog("> Establishing secure connection to NQT Backend Data...", "text-gray-400 mt-2");
+            addLog("> Establishing secure connection to Backend Data...", "text-gray-400 mt-2");
             
             try {
-                const response = await fetch(NQT_API_URL, {
+                const response = await fetch(API_URL, {
                     method: "GET",
                     headers: { "x-api-key": apiKey }
                 });
@@ -262,14 +251,13 @@
             }
         }
 
-        // Hàm in dòng lệnh Terminal
         function addLog(message, customClass = "text-green-400") {
             const terminal = document.getElementById('terminal-content');
             const p = document.createElement('p');
             p.className = `${customClass} mt-1 fade-in`;
             p.innerText = message;
             terminal.appendChild(p);
-            terminal.scrollTop = terminal.scrollHeight; // Tự động cuộn xuống dòng mới nhất
+            terminal.scrollTop = terminal.scrollHeight; 
         }
     </script>
 </body>

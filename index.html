@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinCyber Intel | Global Threat Radar</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Solana Web3.js Core -->
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    
     <style>
         body { background-color: #030303; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
         .neon-text { text-shadow: 0 0 15px rgba(0, 255, 204, 0.9); color: #00ffcc; }
@@ -37,11 +40,12 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
 
+    <!-- Lưới nền không gian mạng -->
     <div class="absolute inset-0 z-0 opacity-20" style="background-image: radial-gradient(#00ffcc 1px, transparent 1px); background-size: 40px 40px;"></div>
 
     <main class="z-10 w-full max-w-6xl px-6 py-12 flex flex-col md:flex-row items-center gap-12 fade-in" id="main-content" style="display: none;">
         
-        <!-- Cột Trái: Chứa thông điệp và Nút thanh toán -->
+        <!-- CỘT TRÁI: THÔNG ĐIỆP & NÚT THANH TOÁN -->
         <div class="w-full md:w-1/2 flex flex-col gap-6">
             <div class="inline-block px-3 py-1 border border-[#00ffcc] rounded-full text-xs text-[#00ffcc] font-bold w-max tracking-widest uppercase shadow-[0_0_10px_rgba(0,255,204,0.3)]">
                 <span class="animate-pulse mr-2">●</span> System Active
@@ -59,15 +63,16 @@
                     <p id="api-desc" class="text-gray-400 font-sans mb-4">Connect your system to receive real-time CVE alerts.</p>
                     <p class="text-4xl font-bold neon-text mb-6">5,000 USDC <span id="price-sub" class="text-sm text-gray-500 font-normal">/ 30 days</span></p>
                     
-                    <button id="purchase-btn" onclick="connectWalletAndPurchase()" class="btn-glow w-full font-extrabold py-4 px-4 rounded-lg uppercase tracking-widest text-lg">
+                    <!-- NÚT GỌI SMART CONTRACT -->
+                    <button id="purchase-btn" onclick="executeSolanaTransaction()" class="btn-glow w-full font-extrabold py-4 px-4 rounded-lg uppercase tracking-widest text-lg">
                         Connect Wallet & Purchase
                     </button>
-                    <p id="payment-note" class="text-xs text-gray-500 mt-3 text-center">Secured via Solana Blockchain.</p>
+                    <p id="payment-note" class="text-xs text-gray-500 mt-3 text-center">Live Transaction via Solana Mainnet-Beta.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Cột Phải: Màn hình Terminal trực tiếp API -->
+        <!-- CỘT PHẢI: TERMINAL TÌNH BÁO -->
         <div class="w-full md:w-1/2 p-6 cyber-border rounded-xl font-mono text-sm shadow-2xl h-[450px] flex flex-col">
             <div class="flex gap-2 mb-4 border-b border-gray-800 pb-2">
                 <div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_5px_red]"></div>
@@ -77,7 +82,7 @@
             </div>
             <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 overflow-y-auto flex-grow pr-2">
                 <p class="text-green-400">> Initiating Data Stream...</p>
-                <p class="mt-2 text-yellow-400 cursor-blink" id="waiting-text">>> Awaiting API Key validation...</p>
+                <p class="mt-2 text-yellow-400 cursor-blink" id="waiting-text">>> Awaiting Solana On-Chain validation...</p>
             </div>
         </div>
     </main>
@@ -87,7 +92,7 @@
     </footer>
 
     <script>
-        // --- 1. TỰ ĐỘNG DỊCH THEO IP ---
+        // --- 1. LÕI ĐỊNH VỊ ĐỊA LÝ & DỊCH THUẬT NGÔN NGỮ ---
         const translations = {
             "VN": {
                 title1: "Hệ Thống Tình Báo",
@@ -96,7 +101,7 @@
                 apiDesc: "Kết nối hệ thống của quý vị để nhận cảnh báo CVE và IP phơi nhiễm ngay thời gian thực.",
                 priceSub: "/ 30 ngày",
                 btn: "KẾT NỐI VÍ & THANH TOÁN",
-                note: "Chỉ chấp nhận thanh toán qua mạng lưới Solana (USDC/USDT)."
+                note: "Giao dịch trực tiếp trên mạng lưới Solana."
             },
             "GLOBAL": {
                 title1: "Global Intelligence",
@@ -105,7 +110,7 @@
                 apiDesc: "Connect your system to receive real-time CVE alerts and exposed IP tracking.",
                 priceSub: "/ 30 days",
                 btn: "CONNECT WALLET & PURCHASE",
-                note: "Secured via Solana Blockchain (USDC/USDT)."
+                note: "Live Transaction via Solana Mainnet-Beta."
             }
         };
 
@@ -130,30 +135,74 @@
         }
         applyLocalization();
 
-        // --- 2. THANH TOÁN SOLANA VÀ GỌI API RENDER ---
+        // --- 2. LÕI GIAO DỊCH SOLANA THỰC TẾ TRÊN MAINNET ---
         const TREASURY_WALLET = "AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3"; 
         const NQT_API_URL = "https://nqt-cyber-api.onrender.com/api/v1/threat-intel";
 
-        async function connectWalletAndPurchase() {
+        async function executeSolanaTransaction() {
             const button = document.getElementById('purchase-btn');
             const waitingText = document.getElementById('waiting-text');
             
             try {
+                // 2.1: Kiểm tra ví Phantom
                 const provider = window.solana;
                 if (!provider || !provider.isPhantom) {
-                    alert("System requires Phantom Wallet (Solana).");
+                    alert("Yêu cầu cài đặt Phantom Wallet (Mạng lưới Solana) để thực hiện giao dịch.");
+                    window.open("https://phantom.app/", "_blank");
                     return;
                 }
 
-                button.innerText = "PROCESSING TRANSACTION...";
+                // Cập nhật giao diện khi đang xử lý
+                button.innerText = "WAITING FOR SIGNATURE...";
                 button.classList.add("opacity-80");
                 if (waitingText) waitingText.classList.remove("cursor-blink");
+                addLog("> Connecting to Phantom Wallet...", "text-gray-400");
+
+                // 2.2: Yêu cầu quyền truy cập ví của khách
+                const resp = await provider.connect();
+                const senderPubkey = resp.publicKey;
+                addLog(`> Wallet Authenticated: ${senderPubkey.toString().slice(0,6)}...${senderPubkey.toString().slice(-4)}`);
+
+                // 2.3: Xây dựng Giao dịch thực tế (Chuyển tiền vào ví Ngài)
+                addLog("> Constructing On-Chain Transaction...");
+                const connection = new window.solanaWeb3.Connection(window.solanaWeb3.clusterApiUrl('mainnet-beta'));
+                const transaction = new window.solanaWeb3.Transaction();
+                const receiverPubkey = new window.solanaWeb3.PublicKey(TREASURY_WALLET);
+
+                // Tạo lệnh chuyển đổi (Đang cấu hình 0.01 SOL làm mẫu test)
+                const transferInstruction = window.solanaWeb3.SystemProgram.transfer({
+                    fromPubkey: senderPubkey,
+                    toPubkey: receiverPubkey,
+                    lamports: window.solanaWeb3.LAMPORTS_PER_SOL * 0.01, // Đổi số này để tăng/giảm số tiền
+                });
+                transaction.add(transferInstruction);
+                transaction.feePayer = senderPubkey;
+
+                // Lấy blockhash mới nhất của mạng lưới
+                let blockhashObj = await connection.getLatestBlockhash();
+                transaction.recentBlockhash = blockhashObj.blockhash;
+
+                // 2.4: Bật Popup Phantom yêu cầu khách hàng ký xác nhận
+                addLog("> Popup Triggered. Awaiting User Approval...", "text-yellow-400");
+                const signedTransaction = await provider.signTransaction(transaction);
+
+                // 2.5: Gửi giao dịch lên Blockchain và chờ mạng lưới xác nhận
+                addLog("> Broadcasting to Solana Mainnet...");
+                const signature = await connection.sendRawTransaction(signedTransaction.serialize());
                 
-                addLog("> Handshake established. Awaiting 5,000 USDC transfer...", "text-gray-400");
+                addLog(`> Verifying Block Signature: ${signature.slice(0, 10)}...`);
+                await connection.confirmTransaction({
+                    blockhash: blockhashObj.blockhash,
+                    lastValidBlockHeight: blockhashObj.lastValidBlockHeight,
+                    signature: signature
+                });
 
-                const response = await provider.connect();
-                await new Promise(resolve => setTimeout(resolve, 2500)); // Giả lập chờ ký duyệt
-
+                // ============================================
+                // TIỀN ĐÃ VÀO VÍ CỦA NGÀI. BẮT ĐẦU NHẢ DỮ LIỆU.
+                // ============================================
+                
+                addLog("> PAYMENT SECURED. ON-CHAIN VERIFICATION PASSED.", "text-green-500 font-bold");
+                
                 button.innerText = "ACCESS GRANTED";
                 button.style.background = "#00ff00";
                 button.style.color = "#000";
@@ -163,19 +212,24 @@
                 const apiKey = "NQT-" + Math.random().toString(36).substring(2, 15).toUpperCase();
                 addLog(`[SECURITY] YOUR API KEY: ${apiKey}`, "text-[#00ffcc] font-bold text-lg mt-4");
                 
-                // Gọi tới máy chủ Render của Ngài
+                // Gọi API kéo dữ liệu từ MongoDB Render hiển thị ngay lập tức
                 fetchRealDataFromRender(apiKey);
 
             } catch (err) {
                 console.error(err);
-                addLog("! TRANSACTION FAILED OR REJECTED.", "text-red-500 font-bold");
+                if (err.message && err.message.includes("User rejected")) {
+                    addLog("! TRANSACTION CANCELED BY USER.", "text-red-500 font-bold");
+                } else {
+                    addLog("! ERROR: Insufficient Balance or Network Congestion.", "text-red-500 font-bold");
+                }
                 button.innerText = "CONNECT WALLET & PURCHASE";
                 button.classList.remove("opacity-80");
             }
         }
 
+        // --- 3. LÕI GỌI API RENDER (MONGODB) ---
         async function fetchRealDataFromRender(apiKey) {
-            addLog("> Establishing secure connection to NQT Render Backend...", "text-gray-400 mt-2");
+            addLog("> Establishing secure connection to NQT Backend Data...", "text-gray-400 mt-2");
             
             try {
                 const response = await fetch(NQT_API_URL, {
@@ -201,20 +255,21 @@
                 addLog(`> RISK LEVEL: ${intel.risk_level}`, "text-red-400");
                 addLog(`> ACTION: ${intel.recommended_action}`, "text-yellow-400");
                 addLog("=========================================", "text-gray-500");
-                addLog(">> Live stream active. Backend connected successfully.", "text-green-400 mt-4 cursor-blink");
+                addLog(">> Live stream active. Real-time data established.", "text-green-400 mt-4 cursor-blink");
 
             } catch (error) {
-                addLog("! CONNECTION ERROR: Cannot reach backend server.", "text-red-500");
+                addLog("! CONNECTION ERROR: Cannot reach MongoDB backend server.", "text-red-500");
             }
         }
 
+        // Hàm in dòng lệnh Terminal
         function addLog(message, customClass = "text-green-400") {
             const terminal = document.getElementById('terminal-content');
             const p = document.createElement('p');
             p.className = `${customClass} mt-1 fade-in`;
             p.innerText = message;
             terminal.appendChild(p);
-            terminal.scrollTop = terminal.scrollHeight;
+            terminal.scrollTop = terminal.scrollHeight; // Tự động cuộn xuống dòng mới nhất
         }
     </script>
 </body>

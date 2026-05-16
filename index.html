@@ -145,10 +145,8 @@
 
         let currentLang = "EN";
 
-        // TỐI ƯU HÓA: SỬ DỤNG IPINFO LÀM PHƯƠNG ÁN DỰ PHÒNG SIÊU BỀN
         async function detectLocationAndTranslate() {
             try {
-                // Thử API thứ nhất
                 let response = await fetch('https://ipinfo.io/json');
                 let data = await response.json();
                 
@@ -160,7 +158,6 @@
                 }
                 applyTranslation();
             } catch (err) {
-                // Nếu bị chặn, hiển thị IP Ẩn thay vì undefined ngớ ngẩn
                 document.getElementById('user-ip-display').innerText = `IP: ENCRYPTED/PROXY`;
                 applyTranslation();
             }
@@ -205,18 +202,19 @@
                 const resp = await provider.connect();
                 addLog(`> Wallet Ready: ${resp.publicKey.toString().slice(0,6)}...`);
 
-                // KIỂM TRA CHỐNG TỰ CHUYỂN TIỀN
                 if (resp.publicKey.toString() === TREASURY_WALLET) {
-                    addLog("❌ LỖI LOGIC: Không thể dùng ví Nhận để thanh toán cho chính nó. Vui lòng đổi ví khác.");
+                    addLog("❌ LỖI: Không thể dùng ví Treasury để tự thanh toán cho chính nó.");
                     btnText.innerText = t.btn;
                     btn.disabled = false;
                     return;
                 }
 
                 btnText.innerText = t.waitSign;
-                addLog("> Forcing Smart Contract Execution (1 USDC)...");
+                addLog("> Connecting to Solana Enterprise RPC (ANKR)...");
 
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+                // THAY ĐỔI CỐT LÕI: DÙNG CỔNG MẠNG DOANH NGHIỆP ANKR ĐỂ CHỐNG NGHẼN
+                const connection = new solanaWeb3.Connection('https://rpc.ankr.com/solana', 'confirmed');
+                
                 const transaction = new solanaWeb3.Transaction().add(
                     solanaWeb3.SystemProgram.transfer({
                         fromPubkey: resp.publicKey,
@@ -226,15 +224,20 @@
                 );
 
                 transaction.feePayer = resp.publicKey;
-                const { blockhash } = await connection.getLatestBlockhash();
+                addLog("> Fetching Blockhash...");
+                
+                // THAY ĐỔI CỐT LÕI: ÉP LẤY BLOCKHASH MỚI NHẤT
+                const { blockhash } = await connection.getLatestBlockhash('finalized');
                 transaction.recentBlockhash = blockhash;
 
+                addLog("> Awaiting user signature in Phantom...");
                 const { signature } = await provider.signAndSendTransaction(transaction);
                 
                 btnText.innerText = t.verify;
-                addLog(`> TX Sent: ${signature.slice(0, 8)}... Confirming...`);
+                addLog(`> TX Sent: ${signature.slice(0, 8)}...`);
+                addLog("> Confirming on-chain...");
 
-                await connection.confirmTransaction(signature);
+                await connection.confirmTransaction(signature, 'confirmed');
 
                 btnText.innerText = t.success;
                 btn.classList.remove('bg-[#00ffcc]', 'text-black');
@@ -246,12 +249,17 @@
 
             } catch (err) {
                 console.error(err);
-                // In ra lỗi chi tiết để Ngài dễ bắt bệnh
-                if (err.message && err.message.includes("Insufficient funds")) {
-                    addLog("❌ TRANSACTION FAILED: Ví không đủ số dư SOL.");
+                
+                // BẮT LỖI CHI TIẾT ĐỂ HIỂN THỊ CHÍNH XÁC
+                let errMsg = err.message || "";
+                if (errMsg.includes("User rejected")) {
+                    addLog("❌ LỖI: Khách hàng đã từ chối ký lệnh.");
+                } else if (errMsg.includes("Insufficient") || errMsg.includes("0x1")) {
+                    addLog("❌ LỖI: Ví của khách không đủ SOL để thanh toán phí mạng + phí truy vấn.");
                 } else {
-                    addLog("❌ TRANSACTION CANCELLED by user.");
+                    addLog("❌ LỖI HỆ THỐNG: " + errMsg.substring(0, 50) + "...");
                 }
+                
                 btnText.innerText = t.btn;
                 btn.disabled = false;
             }
@@ -284,7 +292,7 @@
             const windowScroll = document.getElementById('terminal-window');
             const p = document.createElement('p');
             
-            if (message.includes("❌") || message.includes("CANCELLED") || message.includes("FAILED")) {
+            if (message.includes("❌") || message.includes("LỖI")) {
                 p.className = "text-red-500 mt-1 font-bold";
             } else if (message.includes("✅") || message.includes("UNLOCKING")) {
                 p.className = "text-[#00ffcc] mt-1 font-bold";

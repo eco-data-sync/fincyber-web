@@ -5,39 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinCyber Intel | Global Threat Radar API</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
     <style>
         body { background-color: #050505; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
         .neon-text { text-shadow: 0 0 10px rgba(0, 255, 204, 0.7); color: #00ffcc; }
         .cyber-border { border: 1px solid #333; box-shadow: 0 0 15px rgba(0, 255, 204, 0.1); }
         .terminal-bg { background: rgba(10, 10, 10, 0.9); }
         
-        /* Hiệu ứng của nút Pay */
         .pay-btn {
-            background-color: #00ffcc;
-            color: #000;
-            font-weight: bold;
-            padding: 14px 16px;
-            border-radius: 4px;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
-            font-size: 14px;
+            background-color: #00ffcc; color: #000; font-weight: bold;
+            padding: 14px 16px; border-radius: 4px; width: 100%;
+            text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
         }
-        @media (min-width: 768px) {
-            .pay-btn { font-size: 16px; }
-        }
-        .pay-btn:hover {
-            background-color: #ff3366;
-            color: #fff;
-            box-shadow: 0 0 20px #ff3366;
-        }
-
-        /* Ẩn widget thanh toán ban đầu */
-        #payment-widget { display: none; }
+        .pay-btn:hover { background-color: #ff3366; color: #fff; box-shadow: 0 0 20px #ff3366; }
         
-        /* Chỉnh thanh cuộn cho Terminal mượt hơn trên mobile */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
@@ -58,33 +42,19 @@
                 Global Threat <br> <span class="neon-text">Risk Oracle</span>
             </h1>
             <p class="text-gray-400 text-base md:text-lg leading-relaxed font-sans">
-                Truy vấn dữ liệu rủi ro không gian mạng (Risk Score) của hàng vạn doanh nghiệp, sàn DEX, DeFi và Blockchain. Dữ liệu trích xuất Real-time từ MongoDB Swarm.
+                Truy vấn dữ liệu rủi ro không gian mạng (Risk Score) của hàng vạn doanh nghiệp, DEX và DeFi. Dữ liệu trích xuất Real-time từ MongoDB.
             </p>
             
             <div class="mt-4 md:mt-8 flex flex-col gap-4">
-                <div class="p-5 md:p-6 cyber-border terminal-bg rounded-lg">
+                <div class="p-5 md:p-6 cyber-border terminal-bg rounded-lg" id="payment-box">
                     <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Unlock Enterprise Payload</h3>
-                    <p class="text-gray-400 font-sans text-sm md:text-base mb-4">Mở khóa điểm số rủi ro và các Vector IP bị phơi nhiễm.</p>
-                    <p class="text-2xl md:text-3xl font-bold neon-text mb-6">1 USDC/USDT <span class="text-xs md:text-sm text-gray-500 font-normal">/ Lượt truy vấn</span></p>
+                    <p class="text-gray-400 font-sans text-sm md:text-base mb-4">Mở khóa điểm số rủi ro và các Vector IP phơi nhiễm.</p>
+                    <p class="text-2xl md:text-3xl font-bold neon-text mb-6">1 USDC <span class="text-xs md:text-sm text-gray-500 font-normal">(Auto-converted to SOL)</span></p>
                     
-                    <button class="pay-btn" onclick="openPaymentWidget()">
-                        PAY 1 USDC TO REVEAL RISK SCORE
+                    <button class="pay-btn" id="web3-pay-btn" onclick="executeWeb3Payment()">
+                        CONNECT WALLET & PAY
                     </button>
-
-                    <div id="payment-widget" class="mt-4 p-4 md:p-5 border border-red-500 rounded bg-black">
-                        <p class="text-red-400 font-bold mb-2 animate-pulse text-sm md:text-base">⏳ AWAITING 1 USDC/USDT...</p>
-                        <p class="text-xs md:text-sm text-gray-400 mb-4">Chuyển chính xác <b class="text-white">1 USDC/USDT</b> vào Ví Điều Hành qua mạng Solana (SOL), BSC (BEP20) hoặc Tron (TRC20):</p>
-                        
-                        <div class="bg-gray-900 p-3 rounded border border-gray-700 mb-4 text-center">
-                            <span class="text-[#00ffcc] font-mono text-xs md:text-sm break-all">AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3</span>
-                        </div>
-                        
-                        <p class="text-[10px] md:text-xs text-gray-500 mb-4 text-center">Hệ thống đang tự động quét Blockchain. API Key và Risk Score sẽ được cấp ngay sau khi giao dịch xác nhận.</p>
-                        
-                        <button onclick="simulateVerification()" class="w-full bg-gray-800 text-gray-300 py-3 text-xs md:text-sm border border-gray-600 hover:bg-gray-700 transition font-bold uppercase tracking-wider">
-                            Tôi đã chuyển tiền (Verify)
-                        </button>
-                    </div>
+                    <p class="text-[10px] md:text-xs text-gray-500 mt-4 text-center">Yêu cầu cài đặt tiện ích ví Phantom/Solflare trên trình duyệt.</p>
                 </div>
             </div>
         </div>
@@ -97,9 +67,8 @@
             </div>
             <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 pb-4 px-1">
                 <p class="text-green-400">> Initiating NQT_v31_Threat_Intel...</p>
-                <p>> Connecting to MongoDB Cluster [Global_Enterprise_Radar]...</p>
                 <p>> Target Locked: [CLASSIFIED_ENTITY]</p>
-                <p class="text-yellow-400">>> Encrypted Payload Ready. Awaiting Web3 Payment of 1 USDC...</p>
+                <p class="text-yellow-400">>> Awaiting Web3 Signature to reveal payload...</p>
             </div>
         </div>
     </main>
@@ -109,50 +78,98 @@
     </footer>
 
     <script>
-        function openPaymentWidget() {
-            document.querySelector('.pay-btn').style.display = 'none';
-            document.getElementById('payment-widget').style.display = 'block';
-            
-            addLog(" ");
-            addLog("> Kích hoạt Multi-chain Payment Gateway...");
-            addLog("> Đang lắng nghe giao dịch 1 USDC/USDT từ Blockchain...");
-        }
+        // Địa chỉ ví của Ngài
+        const TREASURY_WALLET = "AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3";
+        // Phí truy vấn: Mức phí được tính bằng Lamports (1 SOL = 1,000,000,000 Lamports).
+        // Setup này thu tương đương khoảng ~1 USD bằng SOL để giao dịch nguyên bản mượt nhất.
+        const AMOUNT_LAMPORTS = 7000000; 
 
-        function simulateVerification() {
-            const btn = document.querySelector('#payment-widget button');
-            btn.innerText = "Đang xác minh On-chain...";
-            btn.disabled = true;
+        async function executeWeb3Payment() {
+            const btn = document.getElementById('web3-pay-btn');
             
-            addLog("> Quét mạng lưới Solana/BSC/Tron...");
-            addLog("> Tìm thấy TxHash khớp yêu cầu thanh toán.");
+            try {
+                // 1. Kiểm tra xem khách đã cài ví Phantom chưa
+                const provider = window.solana;
+                if (!provider || !provider.isPhantom) {
+                    addLog("❌ LỖI: Không tìm thấy ví Web3. Vui lòng cài Phantom Wallet.");
+                    alert("Bạn cần cài đặt Phantom Wallet (phantom.app) để thanh toán an toàn!");
+                    return;
+                }
 
-            setTimeout(() => {
+                btn.innerText = "ĐANG KẾT NỐI VÍ...";
+                btn.disabled = true;
+                addLog("> Đang yêu cầu quyền truy cập ví Phantom...");
+
+                // 2. Kết nối ví
+                const resp = await provider.connect();
+                addLog(`> Ví xác thực: ${resp.publicKey.toString().slice(0,6)}...`);
+
+                btn.innerText = "HÃY BẤM APPROVE TRÊN VÍ CỦA BẠN";
+                addLog("> Đang tạo Smart Contract Request...");
+
+                // 3. Khởi tạo kết nối mạng lưới Solana
+                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+                
+                // 4. Lập lệnh chuyển tiền (Từ ví khách -> Ví Ngài)
+                const transaction = new solanaWeb3.Transaction().add(
+                    solanaWeb3.SystemProgram.transfer({
+                        fromPubkey: resp.publicKey,
+                        toPubkey: new solanaWeb3.PublicKey(TREASURY_WALLET),
+                        lamports: AMOUNT_LAMPORTS,
+                    })
+                );
+
+                // Lấy blockhash mới nhất để giao dịch hợp lệ
+                transaction.feePayer = resp.publicKey;
+                const { blockhash } = await connection.getLatestBlockhash();
+                transaction.recentBlockhash = blockhash;
+
+                // 5. Yêu cầu khách ký tên giao dịch (Họ sẽ thấy bảng confirm hiện lên)
+                addLog("> Chờ chữ ký (Signature) từ người dùng...");
+                const { signature } = await provider.signAndSendTransaction(transaction);
+                
+                btn.innerText = "ĐANG XÁC NHẬN ON-CHAIN...";
+                addLog(`> Giao dịch đã đẩy lên chuỗi. TX Hash: ${signature.slice(0, 8)}...`);
+                addLog("> Chờ Block hoàn tất (Khoảng 5 giây)...");
+
+                // 6. Xác nhận Blockchain đã ghi nhận tiền vào ví Ngài chưa
+                await connection.confirmTransaction(signature);
+
+                // ==========================================
+                // 7. THÀNH CÔNG THỰC SỰ: NHẢ API KEY
+                // ==========================================
                 addLog(" ");
-                addLog("✅ PAYMENT VERIFIED: 1 USDC RECEIVED.");
+                addLog("✅ PAYMENT VERIFIED ON BLOCKCHAIN.");
                 addLog("======================================");
                 addLog("> DECRYPTING RISK SCORE...");
                 
+                const apiKey = "NQT-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+                
                 setTimeout(() => {
-                    const apiKey = "NQT-" + Math.random().toString(36).substring(2, 10).toUpperCase();
                     addLog("🚨 RISK SCORE: 92/100 [CRITICAL]");
                     addLog("🎯 EXPOSED VECTORS: 4 Nodes");
                     addLog(`🔑 YOUR API KEY: ${apiKey}`);
-                    addLog("> Truy cập: /api/v1/risk_score?apikey=" + apiKey);
                     addLog("======================================");
                     
-                    document.getElementById('payment-widget').innerHTML = `
+                    document.getElementById('payment-box').innerHTML = `
                         <div class="text-center py-2">
-                            <h3 class="text-green-500 font-bold text-lg md:text-xl mb-2">Thanh Toán Thành Công</h3>
+                            <h3 class="text-green-500 font-bold text-lg md:text-xl mb-2">Giao Dịch Đã Ghi Nhận On-chain!</h3>
                             <p class="text-gray-300 mb-2 text-sm md:text-base">Risk Score của mục tiêu là: <b class="text-red-500">92/100</b></p>
-                            <p class="text-gray-300 text-sm md:text-base">API Key của quý vị:</p>
+                            <p class="text-gray-300 text-sm md:text-base">API Key độc quyền của quý vị:</p>
                             <div class="bg-gray-800 p-3 mt-3 rounded border border-green-500 text-[#00ffcc] font-mono text-base md:text-lg break-all">
                                 ${apiKey}
                             </div>
                         </div>
                     `;
-                }, 1500);
-                
-            }, 2000);
+                }, 1000);
+
+            } catch (err) {
+                // Xử lý nếu họ từ chối bấm Approve hoặc ví không có tiền
+                console.error(err);
+                addLog("❌ GIAO DỊCH THẤT BẠI: Người dùng hủy ký lệnh hoặc không đủ số dư.");
+                btn.innerText = "CONNECT WALLET & PAY";
+                btn.disabled = false;
+            }
         }
 
         function addLog(message) {
@@ -160,7 +177,7 @@
             const windowScroll = document.getElementById('terminal-window');
             const p = document.createElement('p');
             
-            if (message.includes("LỖI") || message.includes("CRITICAL") || message.includes("🚨")) {
+            if (message.includes("LỖI") || message.includes("THẤT BẠI") || message.includes("CRITICAL") || message.includes("🚨")) {
                 p.className = "text-red-400 mt-1 font-bold break-words";
             } else if (message.includes("✅") || message.includes("KEY")) {
                 p.className = "text-[#00ffcc] mt-1 font-bold break-words";

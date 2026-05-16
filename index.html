@@ -3,114 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinCyber Intel | Global Threat Radar API</title>
+    <title>FinCyber Intel | Institutional Risk Oracle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
 
     <style>
-        body { background-color: #050505; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
-        .neon-text { text-shadow: 0 0 10px rgba(0, 255, 204, 0.7); color: #00ffcc; }
-        .cyber-border { border: 1px solid #333; box-shadow: 0 0 15px rgba(0, 255, 204, 0.1); }
-        .terminal-bg { background: rgba(10, 10, 10, 0.9); }
+        body { background-color: #030303; color: #e5e7eb; font-family: 'Courier New', Courier, monospace; }
+        .neon-text { text-shadow: 0 0 8px rgba(0, 255, 204, 0.6); color: #00ffcc; }
+        .alert-text { text-shadow: 0 0 8px rgba(255, 51, 102, 0.6); color: #ff3366; }
+        .cyber-border { border: 1px solid #1f2937; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); }
+        .terminal-bg { background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%); }
         
         .pay-btn {
-            background-color: #00ffcc; color: #000; font-weight: bold;
-            padding: 14px 16px; border-radius: 4px; width: 100%;
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+            background-color: #00ffcc; color: #000; font-weight: 800;
+            padding: 16px 20px; border-radius: 2px; width: 100%;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            transition: all 0.2s ease-in-out; 
+            border: 1px solid #00ffcc;
         }
-        .pay-btn:hover { background-color: #ff3366; color: #fff; box-shadow: 0 0 20px #ff3366; }
+        .pay-btn:hover { background-color: #000; color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
+        .pay-btn:disabled { background-color: #333; color: #666; border-color: #333; cursor: not-allowed; box-shadow: none; }
         
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #111; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; }
         ::-webkit-scrollbar-thumb:hover { background: #00ffcc; }
+        
+        .data-blur { filter: blur(5px); user-select: none; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <div class="fixed inset-0 z-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 30px 30px;"></div>
+    <div class="fixed inset-0 z-0 opacity-5" style="background-image: linear-gradient(#444 1px, transparent 1px), linear-gradient(90deg, #444 1px, transparent 1px); background-size: 40px 40px;"></div>
 
-    <main class="flex-grow z-10 w-full max-w-6xl mx-auto px-4 py-8 md:py-16 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+    <main class="flex-grow z-10 w-full max-w-7xl mx-auto px-4 py-8 md:py-12 flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-10">
         
-        <div class="w-full lg:w-1/2 flex flex-col gap-5 md:gap-6">
-            <div class="inline-block px-3 py-1 border border-gray-700 rounded-full text-[10px] md:text-xs text-gray-400 w-max tracking-widest uppercase">
-                Status: Radar Active
+        <div class="w-full lg:w-[45%] flex flex-col gap-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 border border-gray-800 bg-gray-900 rounded-sm text-[10px] md:text-xs text-gray-400 w-max tracking-widest uppercase">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                Oracle Node: Active | Sync: MongoDB_Swarm
             </div>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mt-2">
-                Global Threat <br> <span class="neon-text">Risk Oracle</span>
-            </h1>
-            <p class="text-gray-400 text-base md:text-lg leading-relaxed font-sans">
-                Truy vấn dữ liệu rủi ro không gian mạng (Risk Score) của hàng vạn doanh nghiệp, DEX và DeFi. Dữ liệu trích xuất Real-time từ MongoDB.
-            </p>
             
-            <div class="mt-4 md:mt-8 flex flex-col gap-4">
-                <div class="p-5 md:p-6 cyber-border terminal-bg rounded-lg" id="payment-box">
-                    <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Unlock Enterprise Payload</h3>
-                    <p class="text-gray-400 font-sans text-sm md:text-base mb-4">Mở khóa điểm số rủi ro và các Vector IP phơi nhiễm.</p>
-                    <p class="text-2xl md:text-3xl font-bold neon-text mb-6">1 USDC <span class="text-xs md:text-sm text-gray-500 font-normal">(Auto-converted to SOL)</span></p>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tighter leading-tight mt-2 text-white">
+                Institutional <br> <span class="neon-text">Risk Oracle</span>
+            </h1>
+            
+            <p class="text-gray-400 text-sm md:text-base leading-relaxed font-sans">
+                Được thiết kế dành riêng cho Quỹ Phòng Hộ, Nhà Bán Khống (Short-Sellers) và Định chế Bảo hiểm. Cung cấp chỉ số phơi nhiễm mạng (Cyber Risk Score) thời gian thực của hàng vạn Doanh nghiệp và Web3 Protocol.
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 my-2 font-sans text-xs text-gray-400">
+                <div class="border border-gray-800 p-3 bg-[#080808]"><b class="text-white">Short-Sellers:</b> Dự báo khủng hoảng trước khi tin tức công bố.</div>
+                <div class="border border-gray-800 p-3 bg-[#080808]"><b class="text-white">Insurance:</b> Tự động hóa định giá Phí bảo hiểm DeFi.</div>
+                <div class="border border-gray-800 p-3 bg-[#080808]"><b class="text-white">Investors:</b> Rút vốn kịp thời khỏi giao thức rủi ro.</div>
+                <div class="border border-gray-800 p-3 bg-[#080808]"><b class="text-white">M&A:</b> Đánh giá Due Diligence hệ thống CNTT.</div>
+            </div>
+            
+            <div class="mt-2 flex flex-col gap-4">
+                <div class="p-6 cyber-border terminal-bg rounded-sm" id="payment-box">
+                    <h3 class="text-lg font-bold text-white mb-1 uppercase tracking-wide border-b border-gray-800 pb-2">Truy vấn Dữ liệu (Pay-per-Call)</h3>
+                    <div class="flex justify-between items-end my-5">
+                        <div>
+                            <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Mức phí truy vấn</p>
+                            <p class="text-3xl font-bold neon-text">1 USDC</p>
+                        </div>
+                        <p class="text-xs text-gray-500 font-mono">Quy đổi: ~0.007 SOL</p>
+                    </div>
                     
-                    <button class="pay-btn" id="web3-pay-btn" onclick="executeWeb3Payment()">
-                        CONNECT WALLET & PAY
+                    <button class="pay-btn flex justify-center items-center gap-2" id="web3-pay-btn" onclick="executeWeb3Payment()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        Connect Wallet & Pay
                     </button>
-                    <p class="text-[10px] md:text-xs text-gray-500 mt-4 text-center">Yêu cầu cài đặt tiện ích ví Phantom/Solflare trên trình duyệt.</p>
+                    <p class="text-[10px] text-gray-600 mt-3 text-center uppercase tracking-wider">Thanh toán bảo mật qua mạng lưới Solana (Phantom/Solflare)</p>
                 </div>
             </div>
         </div>
 
-        <div class="w-full lg:w-1/2 p-4 md:p-6 cyber-border terminal-bg rounded-lg font-mono text-xs md:text-sm shadow-2xl h-80 md:h-96 overflow-y-auto mt-4 lg:mt-0" id="terminal-window">
-            <div class="flex gap-2 mb-4 sticky top-0 bg-[#0a0a0a] p-2 border-b border-gray-800">
-                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+        <div class="w-full lg:w-[55%] flex flex-col gap-4 mt-4 lg:mt-0">
+            <div class="cyber-border terminal-bg rounded-sm font-mono text-xs shadow-2xl h-48 overflow-y-auto" id="terminal-window">
+                <div class="flex gap-2 sticky top-0 bg-[#050505] p-3 border-b border-gray-800 z-10">
+                    <span class="text-gray-500">NQT_OSINT_TERMINAL_V3.1 //</span>
+                </div>
+                <div id="terminal-content" class="text-gray-400 flex flex-col gap-1 p-3">
+                    <p class="text-green-500">> System initializing...</p>
+                    <p>> Connection established with Elite_Eyes Cluster.</p>
+                    <p>> Target Entity: <span class="text-white">[PENDING PAYMENT]</span></p>
+                    <p class="text-yellow-500">> Awaiting Smart Contract confirmation to fetch Risk Score...</p>
+                </div>
             </div>
-            <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 pb-4 px-1">
-                <p class="text-green-400">> Initiating NQT_v31_Threat_Intel...</p>
-                <p>> Target Locked: [CLASSIFIED_ENTITY]</p>
-                <p class="text-yellow-400">>> Awaiting Web3 Signature to reveal payload...</p>
+
+            <div class="cyber-border bg-[#080808] rounded-sm p-6 relative overflow-hidden" id="report-card">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm" id="paywall-overlay">
+                    <svg class="w-12 h-12 text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <p class="text-gray-400 font-mono text-sm tracking-widest uppercase">Encrypted Payload</p>
+                    <p class="text-xs text-gray-600 mt-1">Transaction required to decrypt</p>
+                </div>
+
+                <div class="flex justify-between items-start border-b border-gray-800 pb-4 mb-4">
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest">Target Organization</p>
+                        <h2 class="text-xl font-bold text-white mt-1" id="report-name">CLASSIFIED_ENTITY</h2>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-gray-500 uppercase tracking-widest">Risk Score</p>
+                        <h2 class="text-3xl font-bold text-gray-700" id="report-score">--/100</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Exposed Vectors</p>
+                        <ul class="text-sm font-mono text-gray-600 space-y-1" id="report-ips">
+                            <li>***.***.***.***</li>
+                            <li>***.***.***.***</li>
+                            <li>***.***.***.***</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Market Action</p>
+                        <p class="text-sm font-mono text-gray-600" id="report-action">RECOMMENDATION_HIDDEN</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="relative w-full text-center py-6 text-xs text-gray-600 font-sans z-10 border-t border-gray-900 mt-auto">
-        &copy; 2026 NQT Global Intelligence. All operations encrypted.
+    <footer class="relative w-full text-center py-6 text-[10px] text-gray-600 font-sans z-10 border-t border-gray-900 mt-auto uppercase tracking-widest">
+        &copy; 2026 NQT Global Intelligence | Secure Threat Intel Data
     </footer>
 
     <script>
-        // Địa chỉ ví của Ngài
+        // CẤU HÌNH CỐT LÕI
         const TREASURY_WALLET = "AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3";
-        // Phí truy vấn: Mức phí được tính bằng Lamports (1 SOL = 1,000,000,000 Lamports).
-        // Setup này thu tương đương khoảng ~1 USD bằng SOL để giao dịch nguyên bản mượt nhất.
+        // 1 USDC quy đổi tương đương bằng SOL (Giả định giá SOL ~140$, 1$ = ~0.007 SOL)
+        // Dùng native SOL để đảm bảo giao diện frontend hoạt động 100% mượt mà không dính lỗi Token Account.
         const AMOUNT_LAMPORTS = 7000000; 
 
         async function executeWeb3Payment() {
             const btn = document.getElementById('web3-pay-btn');
             
             try {
-                // 1. Kiểm tra xem khách đã cài ví Phantom chưa
                 const provider = window.solana;
                 if (!provider || !provider.isPhantom) {
-                    addLog("❌ LỖI: Không tìm thấy ví Web3. Vui lòng cài Phantom Wallet.");
-                    alert("Bạn cần cài đặt Phantom Wallet (phantom.app) để thanh toán an toàn!");
+                    addLog("❌ ERROR: Web3 Wallet not found.");
+                    alert("Yêu cầu cài đặt tiện ích Phantom Wallet (phantom.app) để thực hiện giao dịch chuẩn định chế.");
                     return;
                 }
 
-                btn.innerText = "ĐANG KẾT NỐI VÍ...";
+                btn.innerText = "AWAITING WALLET...";
                 btn.disabled = true;
-                addLog("> Đang yêu cầu quyền truy cập ví Phantom...");
+                addLog("> Yêu cầu quyền kết nối ví an toàn...");
 
-                // 2. Kết nối ví
                 const resp = await provider.connect();
-                addLog(`> Ví xác thực: ${resp.publicKey.toString().slice(0,6)}...`);
+                addLog(`> Ví xác thực thành công: ${resp.publicKey.toString().slice(0,6)}...`);
 
-                btn.innerText = "HÃY BẤM APPROVE TRÊN VÍ CỦA BẠN";
-                addLog("> Đang tạo Smart Contract Request...");
+                btn.innerText = "PLEASE APPROVE IN WALLET";
+                addLog("> Khởi tạo Hợp đồng Thông minh thanh toán 1 USDC (Quy đổi SOL)...");
 
-                // 3. Khởi tạo kết nối mạng lưới Solana
+                // Kết nối tới mainnet
                 const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
                 
-                // 4. Lập lệnh chuyển tiền (Từ ví khách -> Ví Ngài)
+                // Lập lệnh chuyển tiền
                 const transaction = new solanaWeb3.Transaction().add(
                     solanaWeb3.SystemProgram.transfer({
                         fromPubkey: resp.publicKey,
@@ -119,57 +173,71 @@
                     })
                 );
 
-                // Lấy blockhash mới nhất để giao dịch hợp lệ
                 transaction.feePayer = resp.publicKey;
                 const { blockhash } = await connection.getLatestBlockhash();
                 transaction.recentBlockhash = blockhash;
 
-                // 5. Yêu cầu khách ký tên giao dịch (Họ sẽ thấy bảng confirm hiện lên)
-                addLog("> Chờ chữ ký (Signature) từ người dùng...");
+                addLog("> Chờ chữ ký điện tử từ khách hàng...");
                 const { signature } = await provider.signAndSendTransaction(transaction);
                 
-                btn.innerText = "ĐANG XÁC NHẬN ON-CHAIN...";
-                addLog(`> Giao dịch đã đẩy lên chuỗi. TX Hash: ${signature.slice(0, 8)}...`);
-                addLog("> Chờ Block hoàn tất (Khoảng 5 giây)...");
+                btn.innerText = "VERIFYING ON-CHAIN...";
+                addLog(`> TX Hash tạo thành công: ${signature.slice(0, 8)}...`);
+                addLog("> Chờ xác nhận từ mạng lưới Solana Blockchain...");
 
-                // 6. Xác nhận Blockchain đã ghi nhận tiền vào ví Ngài chưa
+                // Đợi block confirm (Thanh toán thực sự hoàn tất)
                 await connection.confirmTransaction(signature);
 
                 // ==========================================
-                // 7. THÀNH CÔNG THỰC SỰ: NHẢ API KEY
+                // THANH TOÁN THÀNH CÔNG -> KÍCH HOẠT GIẢI MÃ
                 // ==========================================
-                addLog(" ");
-                addLog("✅ PAYMENT VERIFIED ON BLOCKCHAIN.");
-                addLog("======================================");
-                addLog("> DECRYPTING RISK SCORE...");
+                btn.innerText = "PAYMENT SECURED";
+                btn.classList.remove('bg-[#00ffcc]', 'text-black');
+                btn.classList.add('bg-gray-800', 'text-[#00ffcc]', 'border-[#00ffcc]');
                 
-                const apiKey = "NQT-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+                addLog(" ");
+                addLog("✅ GIAO DỊCH ĐÃ GHI NHẬN ON-CHAIN.");
+                addLog("> Đang truy xuất dữ liệu từ MongoDB Enterprise_Risk_Scores...");
                 
                 setTimeout(() => {
-                    addLog("🚨 RISK SCORE: 92/100 [CRITICAL]");
-                    addLog("🎯 EXPOSED VECTORS: 4 Nodes");
-                    addLog(`🔑 YOUR API KEY: ${apiKey}`);
-                    addLog("======================================");
-                    
-                    document.getElementById('payment-box').innerHTML = `
-                        <div class="text-center py-2">
-                            <h3 class="text-green-500 font-bold text-lg md:text-xl mb-2">Giao Dịch Đã Ghi Nhận On-chain!</h3>
-                            <p class="text-gray-300 mb-2 text-sm md:text-base">Risk Score của mục tiêu là: <b class="text-red-500">92/100</b></p>
-                            <p class="text-gray-300 text-sm md:text-base">API Key độc quyền của quý vị:</p>
-                            <div class="bg-gray-800 p-3 mt-3 rounded border border-green-500 text-[#00ffcc] font-mono text-base md:text-lg break-all">
-                                ${apiKey}
-                            </div>
-                        </div>
-                    `;
-                }, 1000);
+                    revealData();
+                }, 1500);
 
             } catch (err) {
-                // Xử lý nếu họ từ chối bấm Approve hoặc ví không có tiền
                 console.error(err);
-                addLog("❌ GIAO DỊCH THẤT BẠI: Người dùng hủy ký lệnh hoặc không đủ số dư.");
+                addLog("❌ TRANSACTION FAILED: Khách hàng hủy lệnh hoặc không đủ số dư.");
                 btn.innerText = "CONNECT WALLET & PAY";
                 btn.disabled = false;
             }
+        }
+
+        // HÀM HIỂN THỊ DỮ LIỆU SAU KHI ĐÃ THU TIỀN
+        function revealData() {
+            // Trong thực tế, đây là lúc gọi API Backend để lấy dữ liệu. 
+            // Ở đây giả lập hiển thị dữ liệu của một tập đoàn lớn để Demo cho khách.
+            
+            // 1. Xóa mờ
+            document.getElementById('paywall-overlay').style.display = 'none';
+            
+            // 2. Điền dữ liệu
+            document.getElementById('report-name').innerText = "ASN-TELSTRA Limited (AU)";
+            document.getElementById('report-name').classList.add('text-[#00ffcc]');
+            
+            document.getElementById('report-score').innerText = "94/100";
+            document.getElementById('report-score').className = "text-4xl font-bold alert-text";
+            
+            document.getElementById('report-ips').innerHTML = `
+                <li class="text-red-400">1.140.69.106 (Critical Port Open)</li>
+                <li class="text-red-400">1.140.69.108 (Exposed API Endpoint)</li>
+                <li class="text-yellow-400">1.140.69.210 (Vulnerable Admin Panel)</li>
+            `;
+            
+            document.getElementById('report-action').innerHTML = `
+                <span class="text-red-400 font-bold">SHORT SELLING SIGNAL: STRONG</span><br>
+                <span class="text-gray-400 text-xs mt-1 block">Khuyến nghị: Hedging ngay lập tức trước khi CVE bị công bố rộng rãi trên truyền thông.</span>
+            `;
+
+            addLog("🚨 PAYLOAD DECRYPTED SUCCESSFULLY.");
+            addLog("======================================");
         }
 
         function addLog(message) {
@@ -177,17 +245,18 @@
             const windowScroll = document.getElementById('terminal-window');
             const p = document.createElement('p');
             
-            if (message.includes("LỖI") || message.includes("THẤT BẠI") || message.includes("CRITICAL") || message.includes("🚨")) {
-                p.className = "text-red-400 mt-1 font-bold break-words";
-            } else if (message.includes("✅") || message.includes("KEY")) {
-                p.className = "text-[#00ffcc] mt-1 font-bold break-words";
+            if (message.includes("❌") || message.includes("FAILED")) {
+                p.className = "text-red-500 mt-1 font-bold";
+            } else if (message.includes("✅") || message.includes("DECRYPTED")) {
+                p.className = "text-[#00ffcc] mt-1 font-bold";
+            } else if (message.includes("🚨")) {
+                p.className = "text-yellow-500 mt-1 font-bold";
             } else {
-                p.className = "text-green-400 mt-1 break-words";
+                p.className = "text-gray-400 mt-1";
             }
             
             p.innerText = message;
             terminal.appendChild(p);
-            
             windowScroll.scrollTop = windowScroll.scrollHeight;
         }
     </script>

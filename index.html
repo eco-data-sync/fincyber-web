@@ -16,13 +16,17 @@
             background-color: #00ffcc;
             color: #000;
             font-weight: bold;
-            padding: 12px 16px;
+            padding: 14px 16px;
             border-radius: 4px;
             width: 100%;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+            font-size: 14px;
+        }
+        @media (min-width: 768px) {
+            .pay-btn { font-size: 16px; }
         }
         .pay-btn:hover {
             background-color: #ff3366;
@@ -32,46 +36,52 @@
 
         /* Ẩn widget thanh toán ban đầu */
         #payment-widget { display: none; }
+        
+        /* Chỉnh thanh cuộn cho Terminal mượt hơn trên mobile */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ffcc; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+<body class="antialiased min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <div class="absolute inset-0 z-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 30px 30px;"></div>
+    <div class="fixed inset-0 z-0 opacity-10" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 30px 30px;"></div>
 
-    <main class="z-10 w-full max-w-6xl px-6 py-12 flex flex-col md:flex-row items-center gap-12">
+    <main class="flex-grow z-10 w-full max-w-6xl mx-auto px-4 py-8 md:py-16 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
         
-        <div class="w-full md:w-1/2 flex flex-col gap-6">
-            <div class="inline-block px-3 py-1 border border-gray-700 rounded-full text-xs text-gray-400 w-max tracking-widest uppercase">
+        <div class="w-full lg:w-1/2 flex flex-col gap-5 md:gap-6">
+            <div class="inline-block px-3 py-1 border border-gray-700 rounded-full text-[10px] md:text-xs text-gray-400 w-max tracking-widest uppercase">
                 Status: Radar Active
             </div>
-            <h1 class="text-5xl md:text-6xl font-bold tracking-tighter leading-tight">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mt-2">
                 Global Threat <br> <span class="neon-text">Risk Oracle</span>
             </h1>
-            <p class="text-gray-400 text-lg leading-relaxed font-sans">
+            <p class="text-gray-400 text-base md:text-lg leading-relaxed font-sans">
                 Truy vấn dữ liệu rủi ro không gian mạng (Risk Score) của hàng vạn doanh nghiệp, sàn DEX, DeFi và Blockchain. Dữ liệu trích xuất Real-time từ MongoDB Swarm.
             </p>
             
-            <div class="mt-8 flex flex-col gap-4">
-                <div class="p-6 cyber-border terminal-bg rounded-lg">
-                    <h3 class="text-2xl font-bold text-white mb-2">Unlock Enterprise Payload</h3>
-                    <p class="text-gray-400 font-sans mb-4">Mở khóa điểm số rủi ro và các Vector IP bị phơi nhiễm.</p>
-                    <p class="text-3xl font-bold neon-text mb-6">1 USDC/USDT <span class="text-sm text-gray-500 font-normal">/ Lượt truy vấn</span></p>
+            <div class="mt-4 md:mt-8 flex flex-col gap-4">
+                <div class="p-5 md:p-6 cyber-border terminal-bg rounded-lg">
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Unlock Enterprise Payload</h3>
+                    <p class="text-gray-400 font-sans text-sm md:text-base mb-4">Mở khóa điểm số rủi ro và các Vector IP bị phơi nhiễm.</p>
+                    <p class="text-2xl md:text-3xl font-bold neon-text mb-6">1 USDC/USDT <span class="text-xs md:text-sm text-gray-500 font-normal">/ Lượt truy vấn</span></p>
                     
                     <button class="pay-btn" onclick="openPaymentWidget()">
-                        PAY 1 USDC TO REVEAL RISK SCORE & API KEY
+                        PAY 1 USDC TO REVEAL RISK SCORE
                     </button>
 
-                    <div id="payment-widget" class="mt-4 p-5 border border-red-500 rounded bg-black">
-                        <p class="text-red-400 font-bold mb-2 animate-pulse">⏳ AWAITING 1 USDC/USDT...</p>
-                        <p class="text-sm text-gray-400 mb-4">Vui lòng chuyển chính xác <b class="text-white">1 USDC hoặc 1 USDT</b> vào Ví Điều Hành bên dưới qua mạng Solana (SOL), Binance Smart Chain (BEP20) hoặc Tron (TRC20):</p>
+                    <div id="payment-widget" class="mt-4 p-4 md:p-5 border border-red-500 rounded bg-black">
+                        <p class="text-red-400 font-bold mb-2 animate-pulse text-sm md:text-base">⏳ AWAITING 1 USDC/USDT...</p>
+                        <p class="text-xs md:text-sm text-gray-400 mb-4">Chuyển chính xác <b class="text-white">1 USDC/USDT</b> vào Ví Điều Hành qua mạng Solana (SOL), BSC (BEP20) hoặc Tron (TRC20):</p>
                         
-                        <div class="bg-gray-900 p-3 rounded border border-gray-700 break-all mb-4 text-center">
-                            <span class="text-[#00ffcc] font-mono text-sm">AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3</span>
+                        <div class="bg-gray-900 p-3 rounded border border-gray-700 mb-4 text-center">
+                            <span class="text-[#00ffcc] font-mono text-xs md:text-sm break-all">AaND66JVWVHrV3sufp3MCz1ziyN2KAoW24PQS9U34dE3</span>
                         </div>
                         
-                        <p class="text-xs text-gray-500 mb-4 text-center">Hệ thống đang tự động quét Blockchain. API Key và Risk Score sẽ được cấp ngay sau khi giao dịch xác nhận.</p>
+                        <p class="text-[10px] md:text-xs text-gray-500 mb-4 text-center">Hệ thống đang tự động quét Blockchain. API Key và Risk Score sẽ được cấp ngay sau khi giao dịch xác nhận.</p>
                         
-                        <button onclick="simulateVerification()" class="w-full bg-gray-800 text-gray-300 py-2 text-sm border border-gray-600 hover:bg-gray-700">
+                        <button onclick="simulateVerification()" class="w-full bg-gray-800 text-gray-300 py-3 text-xs md:text-sm border border-gray-600 hover:bg-gray-700 transition font-bold uppercase tracking-wider">
                             Tôi đã chuyển tiền (Verify)
                         </button>
                     </div>
@@ -79,13 +89,13 @@
             </div>
         </div>
 
-        <div class="w-full md:w-1/2 p-6 cyber-border terminal-bg rounded-lg font-mono text-sm shadow-2xl h-96 overflow-y-auto" id="terminal-window">
-            <div class="flex gap-2 mb-4 sticky top-0 bg-black bg-opacity-50 p-2">
+        <div class="w-full lg:w-1/2 p-4 md:p-6 cyber-border terminal-bg rounded-lg font-mono text-xs md:text-sm shadow-2xl h-80 md:h-96 overflow-y-auto mt-4 lg:mt-0" id="terminal-window">
+            <div class="flex gap-2 mb-4 sticky top-0 bg-[#0a0a0a] p-2 border-b border-gray-800">
                 <div class="w-3 h-3 rounded-full bg-red-500"></div>
                 <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
                 <div class="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-            <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 pb-4">
+            <div id="terminal-content" class="text-gray-300 flex flex-col gap-2 opacity-90 pb-4 px-1">
                 <p class="text-green-400">> Initiating NQT_v31_Threat_Intel...</p>
                 <p>> Connecting to MongoDB Cluster [Global_Enterprise_Radar]...</p>
                 <p>> Target Locked: [CLASSIFIED_ENTITY]</p>
@@ -93,19 +103,18 @@
             </div>
         </div>
     </main>
-    <footer class="absolute bottom-4 text-xs text-gray-600 font-sans z-10">
+
+    <footer class="relative w-full text-center py-6 text-xs text-gray-600 font-sans z-10 border-t border-gray-900 mt-auto">
         &copy; 2026 NQT Global Intelligence. All operations encrypted.
     </footer>
 
     <script>
         function openPaymentWidget() {
-            // Ẩn nút Pay
             document.querySelector('.pay-btn').style.display = 'none';
-            // Hiện bảng thông tin ví
             document.getElementById('payment-widget').style.display = 'block';
             
             addLog(" ");
-            addLog("> Kích hoạt Multi-chain Payment Gateway (SOL, BSC, TRC20)...");
+            addLog("> Kích hoạt Multi-chain Payment Gateway...");
             addLog("> Đang lắng nghe giao dịch 1 USDC/USDT từ Blockchain...");
         }
 
@@ -123,7 +132,6 @@
                 addLog("======================================");
                 addLog("> DECRYPTING RISK SCORE...");
                 
-                // Trả kết quả rủi ro kinh điển cho khách hàng
                 setTimeout(() => {
                     const apiKey = "NQT-" + Math.random().toString(36).substring(2, 10).toUpperCase();
                     addLog("🚨 RISK SCORE: 92/100 [CRITICAL]");
@@ -133,11 +141,11 @@
                     addLog("======================================");
                     
                     document.getElementById('payment-widget').innerHTML = `
-                        <div class="text-center">
-                            <h3 class="text-green-500 font-bold text-xl mb-2">Thanh Toán Thành Công</h3>
-                            <p class="text-gray-300 mb-2">Risk Score của mục tiêu là: <b class="text-red-500">92/100</b></p>
-                            <p class="text-gray-300">API Key của quý vị:</p>
-                            <div class="bg-gray-800 p-2 mt-2 rounded border border-green-500 text-[#00ffcc] font-mono text-lg">
+                        <div class="text-center py-2">
+                            <h3 class="text-green-500 font-bold text-lg md:text-xl mb-2">Thanh Toán Thành Công</h3>
+                            <p class="text-gray-300 mb-2 text-sm md:text-base">Risk Score của mục tiêu là: <b class="text-red-500">92/100</b></p>
+                            <p class="text-gray-300 text-sm md:text-base">API Key của quý vị:</p>
+                            <div class="bg-gray-800 p-3 mt-3 rounded border border-green-500 text-[#00ffcc] font-mono text-base md:text-lg break-all">
                                 ${apiKey}
                             </div>
                         </div>
@@ -147,24 +155,22 @@
             }, 2000);
         }
 
-        // Hàm cuộn Terminal tự động
         function addLog(message) {
             const terminal = document.getElementById('terminal-content');
             const windowScroll = document.getElementById('terminal-window');
             const p = document.createElement('p');
             
             if (message.includes("LỖI") || message.includes("CRITICAL") || message.includes("🚨")) {
-                p.className = "text-red-400 mt-1 font-bold";
+                p.className = "text-red-400 mt-1 font-bold break-words";
             } else if (message.includes("✅") || message.includes("KEY")) {
-                p.className = "text-[#00ffcc] mt-1 font-bold";
+                p.className = "text-[#00ffcc] mt-1 font-bold break-words";
             } else {
-                p.className = "text-green-400 mt-1";
+                p.className = "text-green-400 mt-1 break-words";
             }
             
             p.innerText = message;
             terminal.appendChild(p);
             
-            // Tự động cuộn xuống dòng mới nhất
             windowScroll.scrollTop = windowScroll.scrollHeight;
         }
     </script>

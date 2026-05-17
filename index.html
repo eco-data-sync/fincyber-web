@@ -19,6 +19,7 @@
             text-transform: uppercase; letter-spacing: 1.5px;
             transition: all 0.2s ease-in-out; 
             border: 1px solid #00ffcc;
+            cursor: pointer;
         }
         .pay-btn:hover { background-color: #000; color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
         .pay-btn:disabled { background-color: #333; color: #666; border-color: #333; cursor: not-allowed; box-shadow: none; }
@@ -38,7 +39,7 @@
         <div class="w-full lg:w-[45%] flex flex-col gap-6">
             <div class="inline-flex items-center gap-2 px-3 py-1 border border-gray-800 bg-gray-900 rounded-sm text-[10px] md:text-xs text-gray-400 w-max tracking-widest uppercase">
                 <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span id="txt-status">Oracle Node: Active | Sync: MongoDB_Swarm</span>
+                <span id="txt-status">Oracle Node: Active | Sync: Global_Radar</span>
             </div>
             
             <h1 class="text-4xl md:text-5xl font-bold tracking-tighter leading-tight mt-2 text-white">
@@ -46,25 +47,25 @@
             </h1>
             
             <p class="text-gray-400 text-sm md:text-base leading-relaxed font-sans" id="txt-desc">
-                Được thiết kế dành riêng cho Quỹ Phòng Hộ, Nhà Bán Khống và Định chế Bảo hiểm. Cung cấp chỉ số phơi nhiễm mạng (Risk Score) thời gian thực của hàng vạn Doanh nghiệp.
+                Cung cấp chỉ số phơi nhiễm mạng (Risk Score) và cảnh báo lỗ hổng thời gian thực. Truy vấn tự động qua hợp đồng thông minh TRC20.
             </p>
             
             <div class="mt-2 flex flex-col gap-4">
                 <div class="p-6 cyber-border terminal-bg rounded-sm" id="payment-box">
-                    <h3 class="text-lg font-bold text-white mb-1 uppercase tracking-wide border-b border-gray-800 pb-2" id="txt-pay-title">Truy vấn Dữ liệu (Pay-per-Call)</h3>
+                    <h3 class="text-lg font-bold text-white mb-1 uppercase tracking-wide border-b border-gray-800 pb-2" id="txt-pay-title">Truy vấn Dữ liệu An ninh</h3>
                     <div class="flex justify-between items-end my-5">
                         <div>
                             <p class="text-gray-500 text-xs uppercase tracking-widest mb-1" id="txt-fee-label">Mức phí truy vấn</p>
-                            <p class="text-3xl font-bold neon-text">1 USDT <span class="text-sm text-gray-500">TRC20</span></p>
+                            <p class="text-3xl font-bold neon-text">1 USDT</p>
                         </div>
-                        <p class="text-xs text-gray-500 font-mono">Network: TRON</p>
+                        <p class="text-xs text-gray-500 font-mono">Network: TRON (TRC20)</p>
                     </div>
                     
                     <button class="pay-btn flex justify-center items-center gap-2" id="web3-pay-btn" onclick="executeTronPayment()">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        <span id="txt-btn">Connect Wallet & Pay</span>
+                        <span id="txt-btn">Thanh Toán & Mở Khóa</span>
                     </button>
-                    <p class="text-[10px] text-gray-600 mt-3 text-center uppercase tracking-wider" id="txt-hint">Secure 1-Click Payment via TronLink / Trust Wallet</p>
+                    <p class="text-[10px] text-gray-600 mt-3 text-center uppercase tracking-wider" id="txt-hint">Chạm để ký giao dịch bảo mật qua TronLink / Trust Wallet</p>
                 </div>
             </div>
         </div>
@@ -83,31 +84,31 @@
             <div class="cyber-border bg-[#080808] rounded-sm p-6 relative overflow-hidden" id="report-card">
                 <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm" id="paywall-overlay">
                     <svg class="w-12 h-12 text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    <p class="text-gray-400 font-mono text-sm tracking-widest uppercase" id="txt-locked">Encrypted Payload</p>
-                    <p class="text-xs text-gray-600 mt-1" id="txt-locked-sub">Transaction required to query MongoDB</p>
+                    <p class="text-gray-400 font-mono text-sm tracking-widest uppercase" id="txt-locked">Dữ Liệu Đã Mã Hóa</p>
+                    <p class="text-xs text-gray-600 mt-1" id="txt-locked-sub">Yêu cầu thanh toán để truy vấn MongoDB</p>
                 </div>
 
                 <div class="flex justify-between items-start border-b border-gray-800 pb-4 mb-4">
                     <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-widest">Target Organization</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest">Tổ chức mục tiêu</p>
                         <h2 class="text-xl font-bold text-white mt-1" id="report-name">AWAITING_QUERY...</h2>
                     </div>
                     <div class="text-right">
-                        <p class="text-xs text-gray-500 uppercase tracking-widest">Risk Score</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest">Điểm Rủi Ro (Risk Score)</p>
                         <h2 class="text-3xl font-bold text-gray-700" id="report-score">--/100</h2>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-6">
                     <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Exposed Vectors</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Tọa độ IP phơi nhiễm</p>
                         <ul class="text-sm font-mono text-gray-600 space-y-1" id="report-ips">
                             <li>***.***.***.***</li>
                             <li>***.***.***.***</li>
                         </ul>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Market Action</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2">Tình trạng bảo mật</p>
                         <p class="text-sm font-mono text-gray-600" id="report-action">RECOMMENDATION_HIDDEN</p>
                     </div>
                 </div>
@@ -115,74 +116,40 @@
         </div>
     </main>
 
-    <footer class="relative w-full text-center py-6 text-[10px] text-gray-600 font-sans z-10 border-t border-gray-900 mt-auto uppercase tracking-widest">
-        &copy; 2026 NQT Global Intelligence | Secure Threat Intel Data
-    </footer>
-
     <script>
         // CẤU HÌNH VÍ TRON (TRC20) CỦA NGÀI
         const TREASURY_WALLET_TRON = "TDUX35Z7oCiWjC2yikSxN1QTz6iwkaBwR8";
-        const USDT_CONTRACT_ADDRESS = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // Smart Contract USDT chuẩn mạng Tron
+        const USDT_CONTRACT_ADDRESS = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // Smart Contract USDT chuẩn mạng Tron Mainnet
         const AMOUNT_USDT = 1000000; // 1 USDT (USDT trên Tron có 6 số thập phân: 1 * 10^6)
 
-        const dict = {
-            "EN": {
-                title1: "Institutional", title2: "Risk Oracle",
-                desc: "Designed exclusively for Hedge Funds, Short-Sellers, and Insurance Institutions. Provides real-time Cyber Risk Scores from 2.7M+ enterprise endpoints.",
-                payTitle: "Data Query (Pay-per-Call)", feeLabel: "Query Fee", btn: "Quick Pay & Reveal",
-                hint: "1-Click Secure Payment via TronLink", locked: "Encrypted Payload", lockedSub: "Transaction required to query MongoDB",
-                waitWallet: "CONNECTING...", waitSign: "PLEASE APPROVE IN WALLET", verify: "VERIFYING ON-CHAIN...", success: "PAYMENT SECURED"
-            },
-            "VN": {
-                title1: "Hệ Thống Tiên Tri", title2: "Rủi Ro Định Chế",
-                desc: "Được thiết kế dành riêng cho Quỹ Phòng Hộ, Nhà Bán Khống và Định chế Bảo hiểm. Cung cấp chỉ số phơi nhiễm mạng (Risk Score) từ 2.7 triệu IP dữ liệu.",
-                payTitle: "Truy vấn Dữ liệu", feeLabel: "Mức phí truy vấn", btn: "Thanh Toán & Mở Khóa",
-                hint: "Chạm để ký giao dịch bảo mật qua TronLink", locked: "Dữ Liệu Đã Mã Hóa", lockedSub: "Yêu cầu thanh toán để truy vấn MongoDB",
-                waitWallet: "ĐANG KẾT NỐI...", waitSign: "VUI LÒNG XÁC NHẬN TRÊN VÍ", verify: "ĐANG XÁC MINH ON-CHAIN...", success: "THANH TOÁN THÀNH CÔNG"
-            }
-        };
-
-        let currentLang = "EN";
-
-        async function detectLocationAndTranslate() {
+        // Tự động lấy IP để tạo trải nghiệm "Bị theo dõi" cho khách truy cập
+        async function detectLocation() {
             try {
                 let response = await fetch('https://ipinfo.io/json');
                 let data = await response.json();
-                
                 if (data && data.ip) {
                     document.getElementById('user-ip-display').innerText = `IP: ${data.ip} (${data.country})`;
-                    if (data.country === 'VN') currentLang = "VN";
                 }
-                applyTranslation();
             } catch (err) {
                 document.getElementById('user-ip-display').innerText = `IP: ENCRYPTED/PROXY`;
-                applyTranslation();
             }
         }
 
-        function applyTranslation() {
-            const t = dict[currentLang];
-            document.getElementById('txt-title-1').innerText = t.title1;
-            document.getElementById('txt-title-2').innerText = t.title2;
-            document.getElementById('txt-desc').innerText = t.desc;
-            document.getElementById('txt-pay-title').innerText = t.payTitle;
-            document.getElementById('txt-fee-label').innerText = t.feeLabel;
-            document.getElementById('txt-btn').innerText = t.btn;
-            document.getElementById('txt-hint').innerText = t.hint;
-            document.getElementById('txt-locked').innerText = t.locked;
-            document.getElementById('txt-locked-sub').innerText = t.lockedSub;
-        }
-
-        // THUẬT TOÁN KẾT NỐI MẠNG TRON VÀ THANH TOÁN USDT
+        // THUẬT TOÁN KẾT NỐI VÍ VÀ THANH TOÁN USDT 1 CHẠM
         async function executeTronPayment() {
             const btn = document.getElementById('web3-pay-btn');
             const btnText = document.getElementById('txt-btn');
-            const t = dict[currentLang];
+            const overlay = document.getElementById('paywall-overlay');
 
             try {
-                // Kiểm tra xem trình duyệt có cài ví TronLink chưa
+                // Bước 1: Gọi ví TronLink. Nếu ví đang khóa, ép mở khóa.
+                if (window.tronLink) {
+                    await window.tronLink.request({ method: 'tron_requestAccounts' });
+                }
+
+                // Kiểm tra xem trình duyệt có bắt được ví chưa
                 if (!window.tronWeb || !window.tronWeb.defaultAddress.base58) {
-                    addLog("! WARNING: TronLink Wallet not detected in browser.");
+                    addLog("! CẢNH BÁO: Không tìm thấy ví TronLink trên trình duyệt.");
                     window.open("https://www.tronlink.org/", "_blank");
                     return; 
                 }
@@ -190,91 +157,87 @@
                 const tronWeb = window.tronWeb;
                 const userAddress = tronWeb.defaultAddress.base58;
                 
-                btnText.innerText = t.waitWallet;
+                btnText.innerText = "ĐANG KẾT NỐI VÍ...";
                 btn.disabled = true;
-                addLog(`> TronLink Wallet Ready: ${userAddress.slice(0,6)}...`);
+                addLog(`> Đã kết nối ví: ${userAddress.slice(0,6)}...`);
 
-                // Chống chuyển tiền cho chính mình
+                // Chống chuyển tiền cho chính mình (Testnet/Admin check)
                 if (userAddress === TREASURY_WALLET_TRON) {
-                    addLog("❌ LỖI LOGIC: Không thể dùng ví Treasury để thanh toán cho chính nó.");
-                    btnText.innerText = t.btn;
+                    addLog("❌ LỖI LOGIC: Không thể dùng ví Treasury để tự thanh toán.");
+                    btnText.innerText = "Thanh Toán & Mở Khóa";
                     btn.disabled = false;
                     return;
                 }
 
-                btnText.innerText = t.waitSign;
-                addLog("> Forcing Smart Contract Execution (1 USDT TRC20)...");
+                btnText.innerText = "XÁC NHẬN TRÊN VÍ CỦA BẠN";
+                addLog("> Đang khởi tạo hợp đồng chuyển USDT (TRC20)...");
 
-                // Gọi Hợp đồng thông minh USDT TRC20
+                // Bước 2: Gọi Hợp đồng thông minh USDT TRC20 và ép lệnh chuyển 1 USDT
                 let contract = await tronWeb.contract().at(USDT_CONTRACT_ADDRESS);
                 
-                // Thực thi lệnh chuyển tiền 1 Chạm
-                addLog("> Awaiting user signature...");
+                // Trình duyệt tự bật Popup TronLink bắt khách hàng ký (Một chạm)
+                addLog("> Đang chờ chữ ký xác nhận từ người dùng...");
                 let txId = await contract.transfer(TREASURY_WALLET_TRON, AMOUNT_USDT).send();
                 
-                btnText.innerText = t.verify;
-                addLog(`> TX Hash: ${txId.slice(0, 8)}... Confirming...`);
+                btnText.innerText = "ĐANG XÁC MINH TRÊN CHUỖI...";
+                addLog(`> Giao dịch đã gửi (TX Hash): ${txId.slice(0, 8)}... Đang xác nhận...`);
 
-                // Hoàn tất
-                btnText.innerText = t.success;
+                // Bước 3: Đã thanh toán thành công
+                btnText.innerText = "THANH TOÁN THÀNH CÔNG";
                 btn.classList.remove('bg-[#00ffcc]', 'text-black');
                 btn.classList.add('bg-gray-800', 'text-[#00ffcc]', 'border-[#00ffcc]');
                 
                 addLog(" ");
-                addLog("✅ PAYMENT SECURED. INITIATING MONGODB QUERY...");
+                addLog("✅ ĐÃ NHẬN THANH TOÁN. ĐANG MỞ KHÓA DỮ LIỆU TỪ MONGODB...");
                 
-                // Sau khi có tiền, gọi API (Giả lập truy vấn xuống MongoDB)
-                setTimeout(() => fetchDatabaseRiskScore(), 1500);
+                // Trả kết quả (Sau này Ngài gọi API Backend ở đây, hiện tại giả lập trả kết quả)
+                setTimeout(() => revealMaskedData(), 1500);
 
             } catch (err) {
                 console.error(err);
-                addLog("❌ TRANSACTION FAILED OR CANCELLED by user.");
-                btnText.innerText = t.btn;
+                addLog("❌ GIAO DỊCH BỊ HỦY: Khách hàng từ chối ký hoặc không đủ số dư TRX/USDT.");
+                btnText.innerText = "Thanh Toán & Mở Khóa";
                 btn.disabled = false;
             }
         }
 
-        // HÀM MÓC NỐI VÀO MONGODB ĐỂ LẤY KẾT QUẢ THẬT
-        async function fetchDatabaseRiskScore() {
-            addLog("> Querying Global_Enterprise_Radar cluster (2.7M vectors)...");
+        // BƯỚC 4: THUẬT TOÁN HIỂN THỊ DỮ LIỆU BÁN CHE MỜ (PARTIAL MASKING)
+        function revealMaskedData() {
+            document.getElementById('paywall-overlay').style.display = 'none';
             
-            // LƯU Ý CHO KỸ SƯ: Dưới đây là mô phỏng dữ liệu trả về từ Python Backend API của Ngài.
-            // Khi Ngài dựng Backend xong, Ngài sẽ dùng fetch('https://api.fincyberintel.online/get_score')
+            document.getElementById('report-name').innerText = "TẬP ĐOÀN ĐÃ QUÉT (BẢN BÁO CÁO NHANH)";
+            document.getElementById('report-name').classList.add('text-[#00ffcc]');
             
-            setTimeout(() => {
-                document.getElementById('paywall-overlay').style.display = 'none';
-                
-                // Dữ liệu giả lập được "rút" từ MongoDB
-                document.getElementById('report-name').innerText = "TECH-GIANT CORP (MOCK DB)";
-                document.getElementById('report-name').classList.add('text-[#00ffcc]');
-                
-                document.getElementById('report-score').innerText = "92/100";
-                document.getElementById('report-score').className = "text-4xl font-bold alert-text";
-                
-                document.getElementById('report-ips').innerHTML = `
-                    <li class="text-red-400">103.45.***.*** (Port 22 Open - Critical SSH)</li>
-                    <li class="text-yellow-400">103.45.***.*** (Port 8080 - Vulnerable API)</li>
-                `;
-                
-                document.getElementById('report-action').innerHTML = `
-                    <span class="text-red-400 font-bold">SHORT SELLING SIGNAL: STRONG</span><br>
-                    <span class="text-gray-400 text-xs mt-1 block">Recommendation: Action required immediately. Database breach probability > 85%.</span>
-                `;
+            // Điểm rủi ro cực cao để đánh vào tâm lý
+            document.getElementById('report-score').innerText = "94/100";
+            document.getElementById('report-score').className = "text-4xl font-bold alert-text animate-pulse";
+            
+            // Dữ liệu IP che mờ để ép khách hàng liên hệ mua gói Enterprise
+            document.getElementById('report-ips').innerHTML = `
+                <li class="text-red-400 font-bold">14.225.***.*** (Lộ cổng CSDL 3306 - Nguy cơ rò rỉ Data)</li>
+                <li class="text-red-400 font-bold">103.45.***.*** (Lộ cổng SSH 22 - Nguy cơ bị chiếm quyền)</li>
+                <li class="text-yellow-400">115.79.***.*** (Lộ cổng Admin Panel không mã hóa)</li>
+            `;
+            
+            document.getElementById('report-action').innerHTML = `
+                <span class="text-red-400 font-bold">TÌNH TRẠNG: NGUY HIỂM TỘT ĐỘ (CRITICAL)</span><br>
+                <span class="text-gray-400 text-xs mt-2 block">Dữ liệu IP đầy đủ đã bị ẩn vì lý do an toàn công cộng.<br><br>👉 Để lấy báo cáo chi tiết và hướng dẫn vá lỗi, vui lòng nâng cấp gói <b>Enterprise API</b>.</span>
+            `;
 
-                addLog("🚨 PAYLOAD DECRYPTED FROM MONGODB.");
-            }, 2000);
+            addLog("🚨 MÃ HÓA ĐÃ ĐƯỢC GIẢI. HIỂN THỊ BÁO CÁO (CHẾ ĐỘ ẨN DANH).");
         }
 
+        // Hệ thống ghi log Terminal
         function addLog(message) {
             const terminal = document.getElementById('terminal-content');
             const windowScroll = document.getElementById('terminal-window');
             const p = document.createElement('p');
             
-            if (message.includes("❌") || message.includes("FAILED")) {
+            if (message.includes("❌") || message.includes("CẢNH BÁO") || message.includes("BỊ HỦY")) {
                 p.className = "text-red-500 mt-1 font-bold";
-            } else if (message.includes("✅") || message.includes("SECURED")) {
+            } else if (message.includes("✅") || message.includes("THÀNH CÔNG")) {
                 p.className = "text-[#00ffcc] mt-1 font-bold";
-            } else if (message.includes("🚨") || message.includes("WARNING")) {
+            } else if (message.includes("🚨") || message.includes("NGUY HIỂM")) {
                 p.className = "text-yellow-500 mt-1 font-bold";
             } else {
                 p.className = "text-gray-400 mt-1";
@@ -285,7 +248,7 @@
             windowScroll.scrollTop = windowScroll.scrollHeight;
         }
 
-        window.onload = detectLocationAndTranslate;
+        window.onload = detectLocation;
     </script>
 </body>
 </html>

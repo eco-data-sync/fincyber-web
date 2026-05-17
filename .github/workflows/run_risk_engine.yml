@@ -1,0 +1,28 @@
+name: NQT Risk Scoring Engine
+
+on:
+  workflow_dispatch: # Nút bấm chạy thủ công
+  schedule:
+    - cron: '0 0 * * 0' # Chạy tự động quét dọn IP mới mỗi tuần 1 lần (vào đêm Chủ Nhật)
+
+jobs:
+  calculate_scores:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Lấy mã nguồn vũ khí
+        uses: actions/checkout@v3
+
+      - name: Lắp ráp môi trường Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Cài đặt thư viện kết nối MongoDB
+        run: pip install pymongo
+
+      - name: Khởi động Động cơ Chấm điểm
+        env:
+          # Lôi chìa khóa từ két sắt ra xài, an toàn tuyệt đối
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: python mongodb_risk_engine.py

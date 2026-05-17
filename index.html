@@ -43,19 +43,19 @@
             </div>
             
             <h1 class="text-4xl md:text-5xl font-bold tracking-tighter leading-tight mt-2 text-white">
-                <span id="txt-title-1">Institutional</span> <br> <span class="neon-text" id="txt-title-2">Risk Oracle</span>
+                Institutional <br> <span class="neon-text">Risk Oracle</span>
             </h1>
             
-            <p class="text-gray-400 text-sm md:text-base leading-relaxed font-sans" id="txt-desc">
-                Cung cấp chỉ số phơi nhiễm mạng (Risk Score) và cảnh báo lỗ hổng thời gian thực. Truy vấn tự động qua hợp đồng thông minh TRC20.
+            <p class="text-gray-400 text-sm md:text-base leading-relaxed font-sans">
+                Hệ thống quét và cảnh báo lỗ hổng thời gian thực. Truy xuất điểm phơi nhiễm mạng của Doanh nghiệp tự động qua hợp đồng thông minh TRC20.
             </p>
             
             <div class="mt-2 flex flex-col gap-4">
                 <div class="p-6 cyber-border terminal-bg rounded-sm" id="payment-box">
-                    <h3 class="text-lg font-bold text-white mb-1 uppercase tracking-wide border-b border-gray-800 pb-2" id="txt-pay-title">Truy vấn Dữ liệu An ninh</h3>
+                    <h3 class="text-lg font-bold text-white mb-1 uppercase tracking-wide border-b border-gray-800 pb-2">Truy vấn Dữ liệu An ninh</h3>
                     <div class="flex justify-between items-end my-5">
                         <div>
-                            <p class="text-gray-500 text-xs uppercase tracking-widest mb-1" id="txt-fee-label">Mức phí truy vấn</p>
+                            <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Mức phí truy vấn</p>
                             <p class="text-3xl font-bold neon-text">1 USDT</p>
                         </div>
                         <p class="text-xs text-gray-500 font-mono">Network: TRON (TRC20)</p>
@@ -65,7 +65,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         <span id="txt-btn">Thanh Toán & Mở Khóa</span>
                     </button>
-                    <p class="text-[10px] text-gray-600 mt-3 text-center uppercase tracking-wider" id="txt-hint">Chạm để ký giao dịch bảo mật qua TronLink / Trust Wallet</p>
+                    <p class="text-[10px] text-gray-600 mt-3 text-center uppercase tracking-wider">Chạm để ký giao dịch bảo mật qua TronLink / Trust Wallet</p>
                 </div>
             </div>
         </div>
@@ -84,8 +84,8 @@
             <div class="cyber-border bg-[#080808] rounded-sm p-6 relative overflow-hidden" id="report-card">
                 <div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm" id="paywall-overlay">
                     <svg class="w-12 h-12 text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    <p class="text-gray-400 font-mono text-sm tracking-widest uppercase" id="txt-locked">Dữ Liệu Đã Mã Hóa</p>
-                    <p class="text-xs text-gray-600 mt-1" id="txt-locked-sub">Yêu cầu thanh toán để truy vấn MongoDB</p>
+                    <p class="text-gray-400 font-mono text-sm tracking-widest uppercase">Dữ Liệu Đã Mã Hóa</p>
+                    <p class="text-xs text-gray-600 mt-1">Yêu cầu thanh toán để xuất xuất dữ liệu</p>
                 </div>
 
                 <div class="flex justify-between items-start border-b border-gray-800 pb-4 mb-4">
@@ -94,7 +94,7 @@
                         <h2 class="text-xl font-bold text-white mt-1" id="report-name">AWAITING_QUERY...</h2>
                     </div>
                     <div class="text-right">
-                        <p class="text-xs text-gray-500 uppercase tracking-widest">Điểm Rủi Ro (Risk Score)</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest">Điểm Rủi Ro</p>
                         <h2 class="text-3xl font-bold text-gray-700" id="report-score">--/100</h2>
                     </div>
                 </div>
@@ -117,12 +117,12 @@
     </main>
 
     <script>
-        // CẤU HÌNH VÍ TRON (TRC20) CỦA NGÀI
+        // CẤU HÌNH ĐÍCH ĐẾN CỦA DÒNG TIỀN
         const TREASURY_WALLET_TRON = "TDUX35Z7oCiWjC2yikSxN1QTz6iwkaBwR8";
-        const USDT_CONTRACT_ADDRESS = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // Smart Contract USDT chuẩn mạng Tron Mainnet
-        const AMOUNT_USDT = 1000000; // 1 USDT (USDT trên Tron có 6 số thập phân: 1 * 10^6)
+        const USDT_CONTRACT_ADDRESS = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"; // Smart Contract USDT Tron Mainnet
+        const AMOUNT_USDT = 1000000; // Chính xác 1 USDT (6 số thập phân)
 
-        // Tự động lấy IP để tạo trải nghiệm "Bị theo dõi" cho khách truy cập
+        // Lấy IP để đòn tâm lý
         async function detectLocation() {
             try {
                 let response = await fetch('https://ipinfo.io/json');
@@ -135,21 +135,19 @@
             }
         }
 
-        // THUẬT TOÁN KẾT NỐI VÍ VÀ THANH TOÁN USDT 1 CHẠM
+        // BỘ XỬ LÝ THANH TOÁN 1 CHẠM TRONWEB
         async function executeTronPayment() {
             const btn = document.getElementById('web3-pay-btn');
             const btnText = document.getElementById('txt-btn');
-            const overlay = document.getElementById('paywall-overlay');
 
             try {
-                // Bước 1: Gọi ví TronLink. Nếu ví đang khóa, ép mở khóa.
+                // 1. Kích hoạt và yêu cầu kết nối TronLink
                 if (window.tronLink) {
                     await window.tronLink.request({ method: 'tron_requestAccounts' });
                 }
 
-                // Kiểm tra xem trình duyệt có bắt được ví chưa
                 if (!window.tronWeb || !window.tronWeb.defaultAddress.base58) {
-                    addLog("! CẢNH BÁO: Không tìm thấy ví TronLink trên trình duyệt.");
+                    addLog("! CẢNH BÁO: Không tìm thấy ví TronLink/Trust Wallet.");
                     window.open("https://www.tronlink.org/", "_blank");
                     return; 
                 }
@@ -159,75 +157,79 @@
                 
                 btnText.innerText = "ĐANG KẾT NỐI VÍ...";
                 btn.disabled = true;
-                addLog(`> Đã kết nối ví: ${userAddress.slice(0,6)}...`);
+                addLog(`> Đã kết nối ví khách hàng: ${userAddress.slice(0,6)}...`);
 
-                // Chống chuyển tiền cho chính mình (Testnet/Admin check)
                 if (userAddress === TREASURY_WALLET_TRON) {
-                    addLog("❌ LỖI LOGIC: Không thể dùng ví Treasury để tự thanh toán.");
+                    addLog("❌ LỖI LOGIC: Không thể tự chuyển tiền cho chính mình.");
                     btnText.innerText = "Thanh Toán & Mở Khóa";
                     btn.disabled = false;
                     return;
                 }
 
-                btnText.innerText = "XÁC NHẬN TRÊN VÍ CỦA BẠN";
-                addLog("> Đang khởi tạo hợp đồng chuyển USDT (TRC20)...");
+                btnText.innerText = "HÃY BẤM KÝ TRÊN VÍ";
+                addLog("> Đang đóng gói giao dịch 1 USDT (TRC20)...");
 
-                // Bước 2: Gọi Hợp đồng thông minh USDT TRC20 và ép lệnh chuyển 1 USDT
+                // 2. Tương tác trực tiếp với Smart Contract USDT
                 let contract = await tronWeb.contract().at(USDT_CONTRACT_ADDRESS);
                 
-                // Trình duyệt tự bật Popup TronLink bắt khách hàng ký (Một chạm)
-                addLog("> Đang chờ chữ ký xác nhận từ người dùng...");
+                // 3. Kích hoạt popup chữ ký (1 Chạm)
+                addLog("> Đang chờ khách hàng xác nhận...");
                 let txId = await contract.transfer(TREASURY_WALLET_TRON, AMOUNT_USDT).send();
                 
-                btnText.innerText = "ĐANG XÁC MINH TRÊN CHUỖI...";
-                addLog(`> Giao dịch đã gửi (TX Hash): ${txId.slice(0, 8)}... Đang xác nhận...`);
+                btnText.innerText = "ĐANG XÁC MINH...";
+                addLog(`> Giao dịch đã phát sóng (TX Hash): ${txId.slice(0, 8)}...`);
 
-                // Bước 3: Đã thanh toán thành công
-                btnText.innerText = "THANH TOÁN THÀNH CÔNG";
+                // 4. Mở khóa giao diện sau khi giao dịch bắn lên chuỗi
+                btnText.innerText = "ĐÃ THANH TOÁN XONG";
                 btn.classList.remove('bg-[#00ffcc]', 'text-black');
                 btn.classList.add('bg-gray-800', 'text-[#00ffcc]', 'border-[#00ffcc]');
                 
                 addLog(" ");
-                addLog("✅ ĐÃ NHẬN THANH TOÁN. ĐANG MỞ KHÓA DỮ LIỆU TỪ MONGODB...");
+                addLog("✅ ĐÃ THU 1 USDT. ĐANG TRUY XUẤT MONGODB...");
                 
-                // Trả kết quả (Sau này Ngài gọi API Backend ở đây, hiện tại giả lập trả kết quả)
+                // Trễ 1.5 giây để tạo cảm giác hệ thống đang tính toán
                 setTimeout(() => revealMaskedData(), 1500);
 
             } catch (err) {
                 console.error(err);
-                addLog("❌ GIAO DỊCH BỊ HỦY: Khách hàng từ chối ký hoặc không đủ số dư TRX/USDT.");
+                addLog("❌ GIAO DỊCH BỊ HỦY: Từ chối ký hoặc ví không có đủ phí TRX.");
                 btnText.innerText = "Thanh Toán & Mở Khóa";
                 btn.disabled = false;
             }
         }
 
-        // BƯỚC 4: THUẬT TOÁN HIỂN THỊ DỮ LIỆU BÁN CHE MỜ (PARTIAL MASKING)
+        // BỘ XỬ LÝ HIỂN THỊ DỮ LIỆU "CHE MỜ" ĐỂ TẠO SỰ SỢ HÃI
         function revealMaskedData() {
             document.getElementById('paywall-overlay').style.display = 'none';
             
-            document.getElementById('report-name').innerText = "TẬP ĐOÀN ĐÃ QUÉT (BẢN BÁO CÁO NHANH)";
+            // Hiện tên công ty
+            document.getElementById('report-name').innerText = "DOANH NGHIỆP TRUY VẤN";
             document.getElementById('report-name').classList.add('text-[#00ffcc]');
             
-            // Điểm rủi ro cực cao để đánh vào tâm lý
-            document.getElementById('report-score').innerText = "94/100";
+            // Hiện điểm rủi ro thực tế (Giả lập)
+            document.getElementById('report-score').innerText = "92/100";
             document.getElementById('report-score').className = "text-4xl font-bold alert-text animate-pulse";
             
-            // Dữ liệu IP che mờ để ép khách hàng liên hệ mua gói Enterprise
+            // Hiển thị IP bị che đi phần đuôi, nhưng nói rõ lỗ hổng là gì
             document.getElementById('report-ips').innerHTML = `
-                <li class="text-red-400 font-bold">14.225.***.*** (Lộ cổng CSDL 3306 - Nguy cơ rò rỉ Data)</li>
-                <li class="text-red-400 font-bold">103.45.***.*** (Lộ cổng SSH 22 - Nguy cơ bị chiếm quyền)</li>
-                <li class="text-yellow-400">115.79.***.*** (Lộ cổng Admin Panel không mã hóa)</li>
+                <li class="text-red-400 font-bold">14.225.***.*** (Phơi nhiễm Database 3306)</li>
+                <li class="text-red-400 font-bold">103.45.***.*** (Lỗ hổng Remote Desktop 3389)</li>
+                <li class="text-yellow-400">115.79.***.*** (API Endpoint không có Auth)</li>
             `;
             
+            // Chốt sale gói Enterprise
             document.getElementById('report-action').innerHTML = `
-                <span class="text-red-400 font-bold">TÌNH TRẠNG: NGUY HIỂM TỘT ĐỘ (CRITICAL)</span><br>
-                <span class="text-gray-400 text-xs mt-2 block">Dữ liệu IP đầy đủ đã bị ẩn vì lý do an toàn công cộng.<br><br>👉 Để lấy báo cáo chi tiết và hướng dẫn vá lỗi, vui lòng nâng cấp gói <b>Enterprise API</b>.</span>
+                <span class="text-red-400 font-bold">MỨC ĐỘ: ĐẶC BIỆT NGUY HIỂM</span><br>
+                <span class="text-gray-400 text-xs mt-2 block">
+                    * Các IP đã được che mờ 2 Octet cuối để ngăn chặn tin tặc lợi dụng.<br>
+                    * Để nhận danh sách IP đầy đủ và tư vấn khắc phục, vui lòng nâng cấp gói <b>Enterprise API</b>.
+                </span>
             `;
 
-            addLog("🚨 MÃ HÓA ĐÃ ĐƯỢC GIẢI. HIỂN THỊ BÁO CÁO (CHẾ ĐỘ ẨN DANH).");
+            addLog("🚨 MÃ HÓA ĐÃ GIẢI. CHẾ ĐỘ ẨN DANH ĐƯỢC KÍCH HOẠT.");
         }
 
-        // Hệ thống ghi log Terminal
+        // BỘ GHI NHẬT KÝ RA MÀN HÌNH TERMINAL
         function addLog(message) {
             const terminal = document.getElementById('terminal-content');
             const windowScroll = document.getElementById('terminal-window');
@@ -235,7 +237,7 @@
             
             if (message.includes("❌") || message.includes("CẢNH BÁO") || message.includes("BỊ HỦY")) {
                 p.className = "text-red-500 mt-1 font-bold";
-            } else if (message.includes("✅") || message.includes("THÀNH CÔNG")) {
+            } else if (message.includes("✅") || message.includes("THÀNH CÔNG") || message.includes("XONG")) {
                 p.className = "text-[#00ffcc] mt-1 font-bold";
             } else if (message.includes("🚨") || message.includes("NGUY HIỂM")) {
                 p.className = "text-yellow-500 mt-1 font-bold";
